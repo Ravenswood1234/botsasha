@@ -40,3 +40,4 @@ websockets==8.1
 wikipedia==1.4.0
 wrapt==1.12.1
 yarl==1.4.2
+ffmpeg
