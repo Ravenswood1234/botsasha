@@ -909,24 +909,6 @@ async def rpc(ctx, *, arg = None):
         elif arg == 'камень':
             await ctx.send('Ты проиграл') 
 
-
-@bot.command()
-async def feedback(ctx, *, arg = None):
-    if arg is None:
-        await ctx.send(embed=discord.Embed(title="Нет аргумента!", description=f":x: **{ctx.author.mention}**, укажи **сообщение**, которое будет **отоброжатся** в отзыве. :x:", color=0xFF0000))
-    else:
-        emb = discord.Embed(title = 'Ваш отзыв был успешно отправлен!', description = f'**Ваш отзыв выглядит так:** {arg}', color=0x6fdb9e)
-        emb.set_footer(text='Команда вызвана: {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=emb)
-        
-        messagechannel = 727624388710760589
-        channel = ctx.bot.get_channel(messagechannel)
-        
-        embed = discord.Embed(title = 'Новый отзыв!', description = f'**Отзыв выглядит так:** {arg}', color=0x67fe41)
-        embed.set_footer(text='Команда вызвана: {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
-        embed.set_thumbnail(url="https://i.gifer.com/embedded/download/IJ7x.gif")
-        await channel.send(embed=embed)
-
 token = os.environ.get(BOT_TOKEN)
 
 bot.run(str(token)
