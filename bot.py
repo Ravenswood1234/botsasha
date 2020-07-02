@@ -907,6 +907,6 @@ async def rpc(ctx, *, arg = None):
         elif arg == 'камень':
             await ctx.send('Ты проиграл') 
 
-token = os.environ.get(BOT_TOKEN)
+token = os.environ.get("BOT_TOKEN")
 
 bot.run(str(token))
