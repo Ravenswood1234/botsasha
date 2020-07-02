@@ -139,9 +139,9 @@ async def on_member_join( member ):
 
 
     emb = discord.Embed( title = 'Привет Лексик💜', description = f' { member.name } Спасибо  что зашел(зашла), если хочешь ознакомиться с моими командами то пиши `{PREFIX}help`', color=0xdf44fb)
-    channel = bot.get_channel( 722796429562609683 )
+    channel = bot.get_channel( 670921220736155649 )
 
-    role = discord.utils.get( member.guild.roles, id = 726100046713716767 )
+    role = discord.utils.get( member.guild.roles, id = 719173358838743050 )
 
     await member.add_roles( role )
     await channel.send( embed = emb )   
