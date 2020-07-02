@@ -752,6 +752,6 @@ for cog in os.listdir("./cogs"):
             print(f"{cog} can not be loaded:")
             raise e
 
-token = os.environ.get(BOT_TOKEN)
+token = os.environ.get('BOT_TOKEN')
 
 bot.run(str(token))
