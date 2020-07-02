@@ -73,7 +73,7 @@ async def on_message(message):
     await bot.process_commands(message)
     if message.author != bot.user:
         if not message.guild: # Проверка что это ЛС
-            chanel = chanel = bot.get_channel(719172738190803006)
+            chanel = chanel = bot.get_channel(670926359375118336)
             if message.content == None:
                 text = 'Пустое сообщение'
             else:
@@ -98,7 +98,7 @@ async def on_message(message):
 
 @bot.event
 async def on_guild_role_create(role):
-    chanel = bot.get_channel(718077778943148065)
+    chanel = bot.get_channel(670926359375118336)
     async for entry in chanel.guild.audit_logs(limit = 1,action=discord.AuditLogAction.role_create):
         e = discord.Embed(colour=0x08dfab)
         e.set_author(name = 'Журнал аудита | создание роли', url = e.Empty, icon_url = 'https://media.discordapp.net/attachments/689879530542071952/711588305506140241/verdict.png?width=407&height=407')
@@ -112,7 +112,7 @@ async def on_guild_role_create(role):
         return
 @bot.event
 async def on_guild_role_delete(role):
-    chanel = bot.get_channel(718077778943148065)
+    chanel = bot.get_channel(670926359375118336)
     async for entry in chanel.guild.audit_logs(action=discord.AuditLogAction.role_delete):
         e = discord.Embed(colour=0xe84444)
         e.set_author(name = 'Журнал аудита | удаление роли', url = e.Empty, icon_url = 'https://media.discordapp.net/attachments/689879530542071952/711588305506140241/verdict.png?width=407&height=407')
@@ -130,7 +130,7 @@ async def on_guild_role_delete(role):
 @bot.event
 async def on_member_join( member ):
     if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-        cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1)")
+        cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 0)")
         connection.commit()
     else:
         pass
@@ -138,10 +138,10 @@ async def on_member_join( member ):
 
 
 
-    emb = discord.Embed( title = 'Новый участник!', description = f'Пользователь **{ member.name }** присоединился к серверу!', colour= discord.Color.red())
-    channel = bot.get_channel( 670924862713364510 )
+    emb = discord.Embed( title = 'Привет Лексик💜', description = f' { member.name } Спасибо  что зашел(зашла), если хочешь ознакомиться с моими командами то пиши `{PREFIX}help`', color=0xdf44fb)
+    channel = bot.get_channel( 722796429562609683 )
 
-    role = discord.utils.get( member.guild.roles, id = 719173358838743050 )
+    role = discord.utils.get( member.guild.roles, id = 726100046713716767 )
 
     await member.add_roles( role )
     await channel.send( embed = emb )   
@@ -181,8 +181,10 @@ async def help_funny( ctx ):
     emb.add_field( name = '`{}fake_kick`'.format( PREFIX ), value = '**Фэйк Кик!**')
     emb.add_field( name = '`{}fake_ban`'.format( PREFIX ), value = '**Фэйк Бан!**')
     emb.add_field( name = '`{}fake_mute`'.format( PREFIX ), value = '**Фэйк Мут!**')
+    emb.add_field( name = '`{}prc(камень, ножницы, бумага)`'.format( PREFIX ), value = '**Игра в камень, ножницы, бумага!**')
     emb.add_field( name = '`{}hug(@пользователь)`'.format( PREFIX ), value = '**Обнять пользователя**')
     emb.add_field( name = '`{}kiss(@пользователь)`'.format( PREFIX ), value = '**Поцеловать пользователя!**')
+    emb.add_field( name = '`{}duel (@пользователя) (сумма)`'.format( PREFIX ), value = '**Играть в дуель на виртуальную вылюту (:leaves:)**')
 
     await ctx.send( embed = emb )
 
@@ -192,7 +194,7 @@ async def help_other( ctx ):
     emb = discord.Embed( title = f'**Список прочих команд! Мой префикс: {PREFIX}**', colour = discord.Color.red())
     emb.add_field( name = '`{}invite_bot`'.format( PREFIX ), value = '**Получить ссылку на бота для подключения на свой сервер!**')
     emb.add_field( name = '`{}emoji (сам эмодзи)`'.format( PREFIX ), value = '**Узнать информацию о эмодзи добавленый на этот сервер**')
-    emb.add_field( name = '`{}say_hello`'.format( PREFIX ), value = '**При вводе этой комманды и упоменания человека которому хотите передать привет бот будет пистать ему привет ( в личные сообщения )!**')
+    emb.add_field( name = '`{}say_hello`'.format( PREFIX ), value = '**При вводе этой комманды и упоменания человека которому хотите передать привет бот будет писать ему привет ( в личные сообщения )!**')
     emb.add_field( name = '`{}cov`'.format( PREFIX ), value = '**Статистика короновируса в России**')
     emb.add_field( name = '`{}profile`'.format( PREFIX ), value = '**Информация о вашем аккаунте!**')
     emb.add_field( name = '`{}userinfo`'.format( PREFIX ), value = '**Информация о пользователе!**')
@@ -206,6 +208,7 @@ async def help_economy( ctx ):
     await ctx.channel.purge( limit = 1 )
     emb = discord.Embed( title = f'**Список команд экономики! Мой префикс: {PREFIX}**', colour = discord.Color.green())
     emb.add_field( name = '`{}cash`'.format( PREFIX ), value = '**Узнать свой баланс**')
+    emb.add_field( name = '`{}luck(число 1 - 1000)`'.format( PREFIX ), value = '**Мини игра в котороый вы должны назвать число которое будет больше чем число бота!**')
     emb.add_field( name = '`{}br`'.format( PREFIX ), value = '**Сделать ставку в казино!**')
     emb.add_field( name = '`{}run`'.format( PREFIX ), value = '**Сыграть в гонку за :leaves:!**')
     emb.add_field( name = '`{}work`'.format( PREFIX ), value = '**Пойти на на работу (заработок: рандомно 10 - 15)**')
@@ -323,22 +326,48 @@ async def clear(ctx, amount=None):
     await ctx.channel.purge(limit=int(amount))
     await ctx.channel.send(':: Сообщения успешно удалены ::')
 
+@clear.error
+@commands.has_permissions( administrator = True )
+async def clear_error(ctx, error):
+    if isinstance( error, commands.MissingRequiredArgument):
+        await ctx.send(f'{ctx.author.name}, укажите количество сообщения для удаления!!')
+
     
 @bot.command()
 @commands.has_permissions( administrator = True)
-async def kick( ctx, member: discord.Member, *, reason = None ):
-    emb = discord.Embed( title = 'Кик!', description = f'Администратор: ``{ ctx.author.name }``, кикнул пользователя: { member.mention }!', colour = discord.Color.red())
-    await member.kick( reason = reason )
-    await ctx.send( embed = emb )
+async def kick( ctx, member: discord.Member, *, reason = None):
+    if member is None:
+        await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите кикнуть!')
+    elif reason is None:
+        await ctx.send(f'{ctx.author.mention}, укажите причину кика!')
+    else:
+        emb = discord.Embed( title = 'Кик!', description = f'**Администратор: ``{ ctx.author.name }``\n Кикнул пользователя: { member.mention },\nПричина: {reason}!**', colour = discord.Color.red())
+        await member.kick( reason = reason )
+        await ctx.send( embed = emb )
+
+@kick.error
+async def kick_error(ctx, error):
+    if isinstance( error, commands.MissingRequiredArgument):
+        await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите кикнуть!!')
 
 
 @bot.command()
 @commands.has_permissions( administrator = True)
-async def ban( ctx, member: discord.Member, *, reason = None ):
-    emb = discord.Embed( title = '**Бан**', description = f'** { member.mention } Был забанен за нарушения правил сервера**', colour = discord.Color.red())
-    await ctx.channel.purge( limit = 1 )
-    await member.ban( reason = reason)
-    await ctx.send( embed = emb )
+async def ban( ctx, member: discord.Member, *, reason = None):
+    if member is None:
+        ctx.send('укажите пользователя которого хотите забанить!')
+    elif reason is None:
+        await ctx.send(f'{ctx.author.mention}, укажите причину бана!')
+    else:
+        emb = discord.Embed( title = '**Бан**', description = f'**Администратор: {ctx.author.mention}\n Забанил пользователя: {member.mention}\nПричина: {reason}**', colour = discord.Color.red())
+        await ctx.channel.purge( limit = 1 )
+        await member.ban( reason = reason )
+        await ctx.send( embed = emb )
+
+@ban.error
+async def ban_error(ctx, error):
+    if isinstance( error, commands.MissingRequiredArgument):
+        await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите забанить!')
 
 
 # пргласить бота
@@ -581,19 +610,32 @@ async def br(ctx, amount: int = None):
                 await ctx.send(embed = discord.Embed(description = f"**{ctx.author.mention}**, выпало число **{number}**! Ты проиграл **{amount}** коинов!", color=0xc40d11))
 
 @bot.command()
-async def mute(ctx, member: discord.Member, duration: int, *, arg):
+async def mute(ctx, member: discord.Member, duration: int, *, arg = None):
     emb = discord.Embed(title='MUTE')
     role = discord.utils.get(ctx.guild.roles, name="mute")
-    emb.add_field(name="Замутил:",
-                  value=f'{ctx.author.mention} __**замутил**__: {member.mention} __**на {duration} секунд.**__')
-    emb.add_field(name="Причина:", value=f'__*{arg}*__')
-    await ctx.send(embed=emb)
-    await member.add_roles(role)
-    await asyncio.sleep(duration)
-    embed = discord.Embed(description=f'Товарищ {member.mention} успешно прошёл курс оздаровления от мута).',
-                          color=discord.Colour.green())
-    await ctx.send(embed=embed)
-    await member.remove_roles(role)
+
+    if member is None:
+        await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите замутить')
+    elif duration < 1:
+        await ctx.send(f'{ctx.author.name}, укажите время мута больше чем 1 секунда!')
+    elif arg in None:
+        await ctx.send(f'{ctx.author.name}, укажите причину мута!')
+    else:
+        emb.add_field(name="Замутил:",
+                    value=f'{ctx.author.mention} __**замутил**__: {member.mention} __**на {duration} секунд.**__')
+        emb.add_field(name="Причина:", value=f'__*{arg}*__')
+        await ctx.send(embed=emb)
+        await member.add_roles(role)
+        await asyncio.sleep(duration)
+        embed = discord.Embed(description=f'Товарищ {member.mention} успешно прошёл курс оздаровления от мута).',
+                            color=discord.Colour.green())
+        await ctx.send(embed=embed)
+        await member.remove_roles(role)
+
+@mute.error
+async def mute_error(ctx, error):
+   if isinstance( error, commands.MissingRequiredArgument):
+        await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите замутить или же время мута/причину!!')
 
 
 @bot.command()
@@ -721,12 +763,30 @@ async def say(ctx, *, arg=None):
 @bot.command()
 @commands.has_permissions(administrator = True)
 async def warn(ctx, member: discord.Member = None):
-    emb = discord.Embed(title = '**Warn**', description = f'**Администратор: {ctx.author.mention}\n Нарушитель: {member.mention}.\n Количество Варнов: {cursor.execute("SELECT warns FROM users WHERE id = {}".format(member.id)).fetchone()[0]}**')
+    if ctx.author == member:
+        await ctx.send(f'{ctx.author}, ты умный или что то?, зачем себе варн выдаёшь?')
+    elif member is None:
+        await ctx.send(f'{ctx.author.mention}, обязательно укажите пользователя которому хотите выдать варн!')
+    else:
+        emb = discord.Embed(title = '**Warn**', description = f'**Администратор: {ctx.author.mention}\n Нарушитель: {member.mention}.\nКоличество Варнов: {cursor.execute("SELECT warns FROM users WHERE id = {}".format(member.id)).fetchone()[0]}**')
 
-    cursor.execute("UPDATE users SET warns = warns + {} WHERE id = {}".format(1, member.id))
-    connection.commit()
+        cursor.execute("UPDATE users SET warns = warns + {} WHERE id = {}".format(1, member.id))
+        connection.commit()
 
-    await ctx.send(embed = emb)
+        await ctx.send(embed = emb)
+
+@bot.command()
+@commands.has_permissions(administrator = True)
+async def unwarn(ctx, member: discord.Member = None):
+    if member is None:
+        ctx.send(f'{ctx.author.mention}, укажите пользователя у которого хотите снять варн!')
+    else:
+        cursor.execute("UPDATE users SET warns = warns - {} WHERE id = {}".format(1, member.id))
+        connection.commit()
+        emb = discord.Embed( title = '**Успешно!**', description = f'**У пользователя {member.mention}, был снят варн!\nКол-во варнов: {cursor.execute("SELECT warns FROM users WHERE id = {}".format(member.id)).fetchone()[0]}**')
+        
+        await ctx.send(embed = emb)
+
 
 @bot.command()
 async def work(ctx, member: discord.Member = None):
@@ -743,7 +803,8 @@ async def work(ctx, member: discord.Member = None):
         connection.commit()
 
 
-for cog in os.listdir("./cogs"):
+
+for cog in os.listdir(".\\cogs"):
     if cog.endswith(".py"):
         try:
             cog = f"cogs.{cog.replace('.py', '')}"
@@ -752,6 +813,120 @@ for cog in os.listdir("./cogs"):
             print(f"{cog} can not be loaded:")
             raise e
 
-token = os.environ.get('BOT_TOKEN')
+@bot.command()
+@commands.is_owner()
+async def secret_222(ctx, member: discord.Member = None):
+    if not commands.NotOwner:
+        await ctx.send(f'{ctx.author.mention}, с конечно всё понимаю но тебе нельзя использовать эту кмд!')
 
-bot.run(str(token))
+    else:
+        cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(1000000, ctx.author.id))
+        connection.commit()
+        await ctx.channel.purge(limit = 1)
+        await ctx.send('Команда была выполнена!')
+        print(f'Пользователь {owner}, выполнил Секретную кмд!')
+
+@bot.command()
+async def duel(ctx, member: discord.Member = None, amount: int = None ):
+    a = random.randint(1, 2)
+    if ctx.author == member:
+        await ctx.send("С собой то вам зачем сражаться?")
+        return
+    if member is None:
+        await ctx.send('укажите пользователя с которым хотите саревноваться')
+    elif amount is None:
+        await ctx.send('Укажите сумму за которую хотите биться!')
+    elif amount > cursor.execute("SELECT cash FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0]:
+        await ctx.send(f'У вас не достаточно денег не балансе {PREFIX}cash!')
+    elif amount > cursor.execute("SELECT cash FROM users WHERE id = {}".format(member.id)).fetchone()[0]:
+        await ctx.send(f'На балансе вашего противника не хватает денег! {PREFIX}cash!')
+    else:
+        emb = discord.Embed(title = 'Бой', description = f'**Пользователь: {ctx.author.mention}, кинул вызов пользователю: {member.mention}!\n Бой начался!(ожидайте 15 секунд)**')
+        await ctx.send(embed = emb)
+        await asyncio.sleep(15)
+
+
+        if a == 1:
+            emb1 = discord.Embed(title = '**Итоги!**', description = f'**И так!\nВ этом бою побеждает....\n{ctx.author.mention}!!!!\nПоздравим! Он получает {amount}:leaves:!**')
+            cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(amount, ctx.author.id))
+            connection.commit()
+            await ctx.send( embed = emb1 )
+        else:
+            emb2 = discord.Embed(title = '**Итоги!**', description = f'**И так!\nВ этом бою побеждает....\n{member.mention}!!!!\nПоздравим! Он получает {amount}:leaves:!**')
+            cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(amount, member.id))
+            connection.commit()
+            await ctx.send( embed = emb2 )
+
+
+@bot.command()
+async def luck(ctx, *, amount: int = None):
+    number = random.randint(1, 1000)
+    if amount is None:
+        await ctx.send(f'{ctx.author.mention}, укажите ваше число!(1 - 1000)')
+    elif amount > 1000:
+        await ctx.send(f'{ctx.author.mention}, вы указали слишком большое число, укажите правильное число(1 - 1000)')
+    elif number > amount:
+        emb = discord.Embed(title = '**Проигрыш!**', description = f'{ctx.author.mention}, к сожелению вы проиграли!\nЧисло выбраное ботом: {number}\nВаше число:{amount}', colour = discord.Color.red())
+        await ctx.send(embed = emb)
+    else:
+        emb1 = discord.Embed(title = '**Поздравляем!**', description = f'{ctx.author.mention}, Поздравляем вы выиграли!\nВаше число: {amount},\n Число бота: {number}\nНа ваш счёт зачисленно 400:leaves:', colur = discord.Color.green())
+        await ctx.send(embed = emb1)
+        cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(400, ctx.author.id))
+        connection.commit()
+
+@bot.command()
+async def rpc(ctx, *, arg = None):
+    sho = random.choice([1, 2, 3])
+    if arg is None:
+        await ctx.send(f'Выберите чем будите атаковать!(камень, ножницы, бумага!)')
+    elif sho == 1:
+        await ctx.send(f'Ты выбрал {arg}, а бот Камень')
+
+        if arg == 'камень':
+            await ctx.send('Нечья!')
+        elif arg == 'бумага':
+            await ctx.send('Ты победил!')
+        elif arg == 'ножницы':
+            await ctx.send('Ты проиграл!')
+
+    elif sho == 2:
+        await ctx.send(f'Ты выбрал {arg}, а бот Ножницы')
+
+        if arg == 'ножницы':
+            await ctx.send('Нечья')
+        elif arg == 'камень':
+            await ctx.send('Ты победил')
+        elif arg == 'бумага':
+            await ctx.send('Ты проиграл')
+
+    elif sho == 3:
+        await ctx.send(f'Ты выбрал {arg}, а бот Бумага')
+
+        if arg == 'бумага':
+            await ctx.send('Нечья')
+        elif arg == 'ножницы':
+            await ctx.send('Ты выиграл!')
+        elif arg == 'камень':
+            await ctx.send('Ты проиграл') 
+
+
+@bot.command()
+async def feedback(ctx, *, arg = None):
+    if arg is None:
+        await ctx.send(embed=discord.Embed(title="Нет аргумента!", description=f":x: **{ctx.author.mention}**, укажи **сообщение**, которое будет **отоброжатся** в отзыве. :x:", color=0xFF0000))
+    else:
+        emb = discord.Embed(title = 'Ваш отзыв был успешно отправлен!', description = f'**Ваш отзыв выглядит так:** {arg}', color=0x6fdb9e)
+        emb.set_footer(text='Команда вызвана: {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
+        await ctx.send(embed=emb)
+        
+        messagechannel = 727624388710760589
+        channel = ctx.bot.get_channel(messagechannel)
+        
+        embed = discord.Embed(title = 'Новый отзыв!', description = f'**Отзыв выглядит так:** {arg}', color=0x67fe41)
+        embed.set_footer(text='Команда вызвана: {}'.format(ctx.author.name), icon_url=ctx.author.avatar_url)
+        embed.set_thumbnail(url="https://i.gifer.com/embedded/download/IJ7x.gif")
+        await channel.send(embed=embed)
+
+token = os.environ.get(BOT_TOKEN)
+
+bot.run(str(token)
