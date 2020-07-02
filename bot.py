@@ -138,8 +138,8 @@ async def on_member_join( member ):
 
 
 
-    emb = discord.Embed( title = 'Привет Лексик💜', description = f' { member.name } Спасибо  что зашел(зашла), если хочешь ознакомиться с моими командами то пиши `{PREFIX}help`', color=0xdf44fb)
-    channel = bot.get_channel( 670921220736155649 )
+    emb = discord.Embed( title = 'Привет💜', description = f' { member.name } Спасибо  что зашел(зашла), если хочешь ознакомиться с моими командами то пиши `{PREFIX}help`', color= discord.Color.red())
+    channel = bot.get_channel( 728149577797992489 )
 
     role = discord.utils.get( member.guild.roles, id = 719173358838743050 )
 
