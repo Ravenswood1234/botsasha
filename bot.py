@@ -802,7 +802,7 @@ async def work(ctx, member: discord.Member = None):
 
 
 
-for cog in os.listdir(".\\cogs"):
+for cog in os.listdir("./cogs"):
     if cog.endswith(".py"):
         try:
             cog = f"cogs.{cog.replace('.py', '')}"
