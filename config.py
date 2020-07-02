@@ -1,6 +1,6 @@
 settings = {
 	'TOKEN': '111',
-	'NAME BOT': 'Лекси',
+	'NAME BOT': 'Kind',
 	'ID': 719135635272761375,
 	'PREFIX': '/',
 	'OWNER' : 'Jhon_San',
