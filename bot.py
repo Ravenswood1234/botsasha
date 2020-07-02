@@ -31,14 +31,12 @@ async def on_ready():
         rep INT,
         lvl INT,
         warns INT
-
     )""")
     
     cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
         role_id INT,
         id INT,
         cost BIGINT
-
     )""")
 
     for guild in bot.guilds:
@@ -138,8 +136,8 @@ async def on_member_join( member ):
 
 
 
-    emb = discord.Embed( title = 'Привет💜', description = f' { member.name } Спасибо  что зашел(зашла), если хочешь ознакомиться с моими командами то пиши `{PREFIX}help`', color= discord.Color.red())
-    channel = bot.get_channel( 728149577797992489 )
+    emb = discord.Embed( title = 'Привет💜', description = f' { member.name } Спасибо  что зашел(зашла), если хочешь ознакомиться с моими командами то пиши `{PREFIX}help`', color = discord.Color.red())
+    channel = bot.get_channel( 670921220736155649 )
 
     role = discord.utils.get( member.guild.roles, id = 719173358838743050 )
 
@@ -585,9 +583,9 @@ async def kiss(ctx, member: discord.Member):
 
 @bot.command()
 async def hug(ctx, member: discord.Member):
-	emb = discord.Embed(title = '**Объятия!**', description = f'**Пользователь: {ctx.author.name}, обнял: {member.mention}!**', colour = discord.Color.blue())
+    emb = discord.Embed(title = '**Объятия!**', description = f'**Пользователь: {ctx.author.name}, обнял: {member.mention}!**', colour = discord.Color.blue())
 
-	await ctx.send(embed = emb)
+    await ctx.send(embed = emb)
 
 @bot.command(aliases=['betroll'])
 async def br(ctx, amount: int = None):
