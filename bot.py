@@ -911,4 +911,4 @@ async def rpc(ctx, *, arg = None):
 
 token = os.environ.get(BOT_TOKEN)
 
-bot.run(str(token)
+bot.run(str(token))
