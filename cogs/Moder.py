@@ -4,6 +4,7 @@ import asyncio
 import random
 import sqlite3
 
+
 connection = sqlite3.connect('server.db')
 cursor = connection.cursor()
 
@@ -125,7 +126,7 @@ class Moder(commands.Cog):
             emb = discord.Embed(title = '**Успешно!**', description = f'{ctx.author.mention}, вы успешно отправили репорт создателю бота!\nВ скором времени он свяжеться с вами!', colour = discord.Color.green())
             await ctx.send(embed = emb)
             emb1 = discord.Embed(title = '**Репорт!**', description = f'Репорт от: {ctx.author.name}\nСодержания: {arg}')
-            await chanel.send(embed = emb)
+            await chanel.send(embed = emb1)
 
 
 
