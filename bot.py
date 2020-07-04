@@ -145,6 +145,14 @@ async def on_member_join( member ):
     await member.add_roles( role )
     await channel.send( embed = emb )   
 
+  
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.CommandOnCooldown ):
+        await ctx.send(f'Ошибка! Вы сможите использовать эту команду через: {round(error.retry_after)} секунд')
+
+    
+    
 # тестовая кмд
 @bot.command(pass_context=True)  # разрешаем передавать агрументы
 async def test(ctx, arg):  # создаем асинхронную фунцию бота
