@@ -65,9 +65,6 @@ async def on_ready():
     print(f'Prefix: "{PREFIX}"')
 
 
-    await bot.change_presence(activity=discord.Game(name=f'/help - {len(bot.guilds)} серверов'))
-
-
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -156,3 +153,4 @@ for filename in os.listdir('./cogs'):
 token = os.environ.get('BOT_TOKEN')
 
 bot.run(str(token))
+
