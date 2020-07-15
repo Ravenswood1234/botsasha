@@ -23,46 +23,6 @@ owner = settings['OWNER']
 data_create = settings['data_create']
 NAME = settings['NAME BOT']
 
-@bot.event
-async def on_ready():
-    cursor.execute("""CREATE TABLE IF NOT EXISTS users (
-        name TEXT,
-        id INT,
-        cash BIGINT,
-        rep INT,
-        lvl INT,
-        warns INT
-    )""")
-    
-    cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
-        role_id INT,
-        id INT,
-        cost BIGINT
-    )""")
-
-    cursor.execute("""CREATE TABLE IF NOT EXISTS rp(
-        hp INT,
-        patrone BIGINT,
-        member_id
-
-    )""")
-
-    for guild in bot.guilds:
-        for member in guild.members:
-            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 1)")
-                
-            else:
-                pass
-
-    connection.commit()
-
-
-    print('Бот зашёл в сеть' )
-    print('и он готов к работе')
-    print(f'Создаель: {owner}.')
-    print(f'Создан: {data_create}')
-    print(f'Prefix: "{PREFIX}"')
 
 
 
