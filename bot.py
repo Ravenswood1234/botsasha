@@ -154,5 +154,5 @@ async def ping( ctx ):
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         bot.load_extension(f'cogs.{filename[:-3]}')
-
-bot.run('NzE5MTM1NjM1MjcyNzYxMzc1.Xv8nWQ.c6TQpgxsA4ByRFnG-RUNC5mKF94')
+token = os.environ.get('BOT_TOKEN')
+bot.run(token)
