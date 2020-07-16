@@ -24,6 +24,51 @@ data_create = settings['data_create']
 NAME = settings['NAME BOT']
 
 
+cursor.execute("""CREATE TABLE IF NOT EXISTS users (
+        name TEXT,
+        id INT,
+        cash BIGINT,
+        rep INT,
+        lvl INT,
+        warns INT
+    )""")
+    
+cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
+        role_id INT,
+        id INT,
+        cost BIGINT
+    )""")
+
+cursor.execute("""CREATE TABLE IF NOT EXISTS rp(
+        hp INT,
+        patrone BIGINT,
+        member_id
+
+    )""")
+
+@bot.event
+async def on_ready():
+
+    for guild in bot.guilds:
+        for member in guild.members:
+            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
+                cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 1)")
+                
+            else:
+                pass
+
+    connection.commit()
+
+
+    print('Бот зашёл в сеть' )
+    print('и он готов к работе')
+    print(f'Создаель: {owner}.')
+    print(f'Создан: {data_create}')
+    print(f'Prefix: "{PREFIX}"')
+
+
+    await bot.change_presence(activity=discord.Game(name=f'/help - {len(bot.guilds)} серверов'))
+
 
 
 @bot.event
@@ -110,7 +155,4 @@ for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         bot.load_extension(f'cogs.{filename[:-3]}')
 
-token = os.environ.get('BOT_TOKEN')
-
-bot.run(str(token))
-
+bot.run('NzE5MTM1NjM1MjcyNzYxMzc1.Xv8nWQ.c6TQpgxsA4ByRFnG-RUNC5mKF94')
