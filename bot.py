@@ -67,7 +67,7 @@ async def on_ready():
     print(f'Prefix: "{PREFIX}"')
 
 
-    await bot.change_presence(activity=discord.Game(name=f'/help - {len(bot.guilds)} серверов'))
+    await bot.change_presence(activity=discord.Game(name=f'/help | {len(bot.guilds)} серверов'))
 
 
 
