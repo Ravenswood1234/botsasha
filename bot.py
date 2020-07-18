@@ -25,7 +25,6 @@ NAME = settings['NAME BOT']
 
 
 cursor.execute("""CREATE TABLE IF NOT EXISTS users (
-        name TEXT,
         id INT,
         cash BIGINT,
         rep INT,
@@ -52,7 +51,7 @@ async def on_ready():
     for guild in bot.guilds:
         for member in guild.members:
             if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 1, 0)")
+                cursor.execute(f"INSERT INTO users VALUES ({member.id}, 0, 0, 1, 1, 0)")
                 
             else:
                 pass
@@ -65,8 +64,7 @@ async def on_ready():
     print(f'Создаель: {owner}.')
     print(f'Создан: {data_create}')
     print(f'Prefix: "{PREFIX}"')
-
-
+    
     await bot.change_presence(activity=discord.Game(name=f'/help | {len(bot.guilds)} серверов | /update'))
 
 
@@ -116,7 +114,7 @@ async def on_guild_role_delete(role):
 @bot.event
 async def on_member_join( member ):
     if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-        cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 0)")
+        cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 0, 0)")
         connection.commit()
     else:
         pass
@@ -145,6 +143,11 @@ async def hello(ctx):
 @bot.command()
 async def ping( ctx ):
     await ctx.send('Pong')
+    
+
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        bot.load_extension(f'cogs.{filename[:-3]}')
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
