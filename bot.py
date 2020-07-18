@@ -30,7 +30,8 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users (
         cash BIGINT,
         rep INT,
         lvl INT,
-        warns INT
+        warns INT,
+        bank BIGINT
     )""")
     
 cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
@@ -43,7 +44,6 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS rp(
         hp INT,
         patrone BIGINT,
         member_id
-
     )""")
 
 @bot.event
@@ -52,7 +52,7 @@ async def on_ready():
     for guild in bot.guilds:
         for member in guild.members:
             if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 1)")
+                cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 1, 0)")
                 
             else:
                 pass
@@ -75,14 +75,10 @@ async def on_ready():
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound ):
         await ctx.send(embed = discord.Embed(description = f'** {ctx.author.name}, данной команды не существует.**', color=0x0c0c0c))
+    elif isinstance(error, commands.CommandOnCooldown ):
+        await ctx.send(f'Ошибка! Вы сможите использовать эту команду через: {round(error.retry_after)} секунд')
     else:
         raise error
-
-
-@bot.event
-async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown ):
-        await ctx.send(f'Ошибка! Вы сможите использовать эту команду через: {round(error.retry_after)} секунд')
 
 
 @bot.event
@@ -149,7 +145,6 @@ async def hello(ctx):
 @bot.command()
 async def ping( ctx ):
     await ctx.send('Pong')
-    
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
