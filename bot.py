@@ -31,7 +31,8 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users (
         lvl INT,
         warns INT,
         bank BIGINT,
-        kindcoin BIGINT
+        kindcoin BIGINT,
+        adminstaff INT
     )""")
     
 cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
@@ -46,13 +47,22 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS rp(
         member_id
     )""")
 
+async def status_task():
+    while True:
+        await bot.change_presence(activity=discord.Game(name=f'/help'))
+        await asyncio.sleep(30)
+        await bot.change_presence(activity=discord.Game(name=f'{len(bot.guilds)} серверов', type=discord.ActivityType.watching))
+        await asyncio.sleep(30)
+        await bot.change_presence(activity=discord.Game(name=f'/update'))
+        await asyncio.sleep(30)
+
 @bot.event
 async def on_ready():
 
     for guild in bot.guilds:
         for member in guild.members:
             if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 1, 0, 0)")
+                cursor.execute(f"INSERT INTO users VALUES({member.id}, 0, 0, 1, 1, 0, 0, 0)")
                 
             else:
                 pass
@@ -66,8 +76,9 @@ async def on_ready():
     print(f'Создан: {data_create}')
     print(f'Prefix: "{PREFIX}"')
 
+    bot.loop.create_task(status_task())
 
-    await bot.change_presence(activity=discord.Game(name=f'/help | {len(bot.guilds)} серверов | /update'))
+    #await bot.change_presence(activity=discord.Game(name=f'/help | {len(bot.guilds)} серверов | /update'))
 
 
 
@@ -145,7 +156,6 @@ async def hello(ctx):
 @bot.command()
 async def ping( ctx ):
     await ctx.send('Pong')
-    
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
