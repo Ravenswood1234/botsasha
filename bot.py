@@ -89,6 +89,8 @@ async def on_ready():
     while da is True:
         costt = random.randint(1, 10000)
 
+        ttime = random.randit(60, 7200)
+
         chanel = chanel = bot.get_channel(670926359375118336)
 
         old_costt = cursor.execute("SELECT cost_kindcoin FROM users WHERE id = {}".format(558235304138637332)).fetchone()[0]
@@ -100,7 +102,7 @@ async def on_ready():
         connection.commit()
         await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}")
         print(f"Стоимость KindCoins была изменена!  Стоимость: {costt}")
-        await asyncio.sleep(7200)
+        await asyncio.sleep(ttime)
 
 #@bot.event
 #async def on_message(message):
@@ -192,7 +194,7 @@ async def on_member_join( member ):
 
 # тестовая кмд
 @bot.command(pass_context=True)  # разрешаем передавать агрументы
-async def test(ctx, arg):  # создаем асинхронную фунцию бота
+async def test(ctx, arg):  # создаем  асинхронную фунцию бота
     await ctx.send(arg)  # отправляем обратно аргумент 
 
 # кмд привет
