@@ -36,7 +36,8 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users (
         kindcoin BIGINT,
         adminstaff INT,
         cost_kindcoin BIGINT,
-        old_kindcoin BIGINT
+        old_kindcoin BIGINT,
+        message_count BIGINT
     )""")
     
 cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
