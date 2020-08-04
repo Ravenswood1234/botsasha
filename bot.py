@@ -100,7 +100,8 @@ async def on_ready():
 
         cursor.execute("UPDATE users SET cost_kindcoin =  {} WHERE id = {}".format(costt, 558235304138637332))
         connection.commit()
-        await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt} Последнии изменения были {ttime} секунд назад")
+        await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}. Следующии изменения через: {ttime} секунду")
+
         print(f"Стоимость KindCoins была изменена!  Стоимость: {costt} Последнии изменения были {ttime} секунд назад")
         await asyncio.sleep(ttime)
 
