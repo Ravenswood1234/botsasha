@@ -111,6 +111,32 @@ async def on_command_error(ctx, error):
     else:
         raise error
 
+        
+@bot.event
+async def on_message(message):
+
+    chanel = chanel = bot.get_channel(message.channel.id)
+
+    cursor.execute("UPDATE users SET message_count = message_count + {} WHERE id = {}".format(1, message.author.id))
+    connection.commit()
+
+    cursor.execute("UPDATE users SET rep = rep + {} WHERE id = {}".format(1, message.author.id))
+    connection.commit()
+
+    rep = cursor.execute("SELECT rep FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+
+    if rep % 20 == 0:
+        if message.author.id == 719135635272761375:
+            pass
+        else:
+            cursor.execute("UPDATE users SET lvl = lvl + {} WHERE id = {}".format(1, message.author.id))
+            connection.commit()
+            new_lvl = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+
+            emb = discord.Embed(title = "**Lvl Up!**", description = f"**У пользователя: {message.author.name} новый уровень! ({new_lvl})**", colour = discord.Color.purple())
+
+            await chanel.send(embed = emb)
+        
 
 @bot.event
 async def on_guild_role_create(role):
