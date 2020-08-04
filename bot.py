@@ -34,7 +34,10 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users (
         warns INT,
         bank BIGINT,
         kindcoin BIGINT,
-        adminstaff INT
+        adminstaff INT,
+        cost_kindcoin BIGINT,
+        old_kindcoin BIGINT,
+        message_count BIGINT
     )""")
     
 cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
@@ -65,7 +68,7 @@ async def on_ready():
     for guild in bot.guilds:
         for member in guild.members:
             if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES({member.id}, 0, 0, 1, 1, 0, 0, 0)")
+                cursor.execute(f"INSERT INTO users VALUES({member.id}, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)")
                 
             else:
                 pass
