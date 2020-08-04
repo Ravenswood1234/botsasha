@@ -12,6 +12,8 @@ import asyncio
 import os
 import json
 
+da = True
+
 bot = commands.Bot(command_prefix = settings['PREFIX'])
 bot.remove_command( 'help' )
 
