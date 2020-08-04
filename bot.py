@@ -89,7 +89,7 @@ async def on_ready():
     while da is True:
         costt = random.randint(1, 10000)
 
-        ttime = random.randit(60, 7200)
+        ttime = random.randint(60, 7200)
 
         chanel = chanel = bot.get_channel(670926359375118336)
 
