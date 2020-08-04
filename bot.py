@@ -80,6 +80,22 @@ async def on_ready():
 
     #await bot.change_presence(activity=discord.Game(name=f'/help | {len(bot.guilds)} серверов | /update'))
 
+    while da is True:
+        costt = random.randint(1, 10000)
+
+        chanel = chanel = bot.get_channel(732189531402403841)
+
+        old_costt = cursor.execute("SELECT cost_kindcoin FROM users WHERE id = {}".format(558235304138637332)).fetchone()[0]
+
+        cursor.execute("UPDATE users SET old_kindcoin =  {} WHERE id = {}".format(old_costt, 558235304138637332))
+        connection.commit()
+
+        cursor.execute("UPDATE users SET cost_kindcoin =  {} WHERE id = {}".format(costt, 558235304138637332))
+        connection.commit()
+        await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}")
+        print(f"Стоимость KindCoins была изменена! Стоимость: {costt}")
+        await asyncio.sleep(60)
+
 
 
 @bot.event
