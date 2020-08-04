@@ -83,7 +83,7 @@ async def on_ready():
     while da is True:
         costt = random.randint(1, 10000)
 
-        chanel = chanel = bot.get_channel(732189531402403841)
+        chanel = chanel = bot.get_channel(670926359375118336)
 
         old_costt = cursor.execute("SELECT cost_kindcoin FROM users WHERE id = {}".format(558235304138637332)).fetchone()[0]
 
@@ -94,7 +94,7 @@ async def on_ready():
         connection.commit()
         await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}")
         print(f"Стоимость KindCoins была изменена! Стоимость: {costt}")
-        await asyncio.sleep(60)
+        await asyncio.sleep(7200)
 
 
 
