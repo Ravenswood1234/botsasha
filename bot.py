@@ -89,7 +89,7 @@ async def on_ready():
     while da is True:
         costt = random.randint(1, 10000)
 
-        ttime = random.randint(60, 7200)
+        ttime = random.randint(60, 10000)
 
         chanel = chanel = bot.get_channel(670926359375118336)
 
@@ -100,35 +100,37 @@ async def on_ready():
 
         cursor.execute("UPDATE users SET cost_kindcoin =  {} WHERE id = {}".format(costt, 558235304138637332))
         connection.commit()
-        await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}. Следующии изменения через: {ttime} секунду")
+        await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}. Следующии изменения через: {ttime} секунд")
 
         print(f"Стоимость KindCoins была изменена!  Стоимость: {costt} Последнии изменения были {ttime} секунд назад")
         await asyncio.sleep(ttime)
 
-#@bot.event
-#async def on_message(message):
+@bot.event
+async def on_message(message):
 
-    #chanel = chanel = bot.get_channel(message.channel.id)
+    await bot.process_commands(message)
 
-    #cursor.execute("UPDATE users SET message_count = message_count + {} WHERE id = {}".format(1, message.author.id))
-    #connection.commit()
+    chanel = chanel = bot.get_channel(message.channel.id)
 
-    #cursor.execute("UPDATE users SET rep = rep + {} WHERE id = {}".format(1, message.author.id))
-    #connection.commit()
+    cursor.execute("UPDATE users SET message_count = message_count + {} WHERE id = {}".format(1, message.author.id))
+    connection.commit()
 
-    #rep = cursor.execute("SELECT rep FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+    cursor.execute("UPDATE users SET rep = rep + {} WHERE id = {}".format(1, message.author.id))
+    connection.commit()
 
-    #if rep % 20 == 0:
-        #if message.author.id == 719135635272761375:
-            #pass
-        #else:
-            #cursor.execute("UPDATE users SET lvl = lvl + {} WHERE id = {}".format(1, message.author.id))
-            #connection.commit()
-            #new_lvl = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+    rep = cursor.execute("SELECT rep FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
 
-            #emb = discord.Embed(title = "**Lvl Up!**", description = f"**У пользователя: {message.author.name} новый уровень! ({new_lvl})**", colour = discord.Color.purple())
+    if rep % 30 == 0:
+        if message.author.id == 719135635272761375:
+            pass
+        else:
+            cursor.execute("UPDATE users SET lvl = lvl + {} WHERE id = {}".format(1, message.author.id))
+            connection.commit()
+            new_lvl = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
 
-            #await chanel.send(embed = emb)
+            emb = discord.Embed(title = "**Lvl Up!**", description = f"**У пользователя: {message.author.name} повысился уровень до {new_lvl}!**", colour = discord.Color.purple())
+
+            await chanel.send(embed = emb)
         
 
 
