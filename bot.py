@@ -31,13 +31,15 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users (
         cash BIGINT,
         rep INT,
         lvl INT,
-        warns INT,
+        warn INT,
         bank BIGINT,
         kindcoin BIGINT,
         adminstaff INT,
         cost_kindcoin BIGINT,
         old_kindcoin BIGINT,
-        message_count BIGINT
+        message_count BIGINT,
+        xpc BIGINT,
+        zamet TEXT
     )""")
     
 cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
@@ -68,7 +70,7 @@ async def on_ready():
     for guild in bot.guilds:
         for member in guild.members:
             if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES({member.id}, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0)")
+                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30, 'none')")
                 
             else:
                 pass
@@ -89,9 +91,9 @@ async def on_ready():
     while da is True:
         costt = random.randint(1, 10000)
 
-        ttime = random.randint(60, 10000)
+        ttime = random.randint(1, 10000)
 
-        chanel = chanel = bot.get_channel(670926359375118336)
+        chanel = chanel = bot.get_channel(732189531402403841)
 
         old_costt = cursor.execute("SELECT cost_kindcoin FROM users WHERE id = {}".format(558235304138637332)).fetchone()[0]
 
@@ -100,9 +102,8 @@ async def on_ready():
 
         cursor.execute("UPDATE users SET cost_kindcoin =  {} WHERE id = {}".format(costt, 558235304138637332))
         connection.commit()
-        await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}. Следующии изменения через: {ttime} секунд")
-
-        print(f"Стоимость KindCoins была изменена!  Стоимость: {costt} Последнии изменения были {ttime} секунд назад")
+        await chanel.send(f"Стоимость KindCoins была изменена! Стоимость: {costt}, следующие изменения через: {ttime}")
+        print(f"Стоимость KindCoins была изменена! Стоимость: {costt}")
         await asyncio.sleep(ttime)
 
 @bot.event
@@ -120,7 +121,9 @@ async def on_message(message):
 
     rep = cursor.execute("SELECT rep FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
 
-    if rep % 30 == 0:
+    xpc = cursor.execute("SELECT xpc FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+
+    if rep % xpc == 0:
         if message.author.id == 719135635272761375:
             pass
         else:
@@ -128,9 +131,23 @@ async def on_message(message):
             connection.commit()
             new_lvl = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
 
-            emb = discord.Embed(title = "**Lvl Up!**", description = f"**У пользователя: {message.author.name} повысился уровень до {new_lvl}!**", colour = discord.Color.purple())
+            emb = discord.Embed(title = "**Lvl Up!**", description = f"**У пользователя: {message.author.name} повысился уровень до ``{new_lvl}``!**", colour = discord.Color.purple())
 
             await chanel.send(embed = emb)
+
+            cursor.execute("UPDATE users SET rep = {} WHERE id = {}".format(0, message.author.id))
+            connection.commit()
+    
+            xpc = xpc + 30
+
+            cursor.execute("UPDATE users SET xpc = {} WHERE id = {}".format(xpc, message.author.id))
+            connection.commit()
+
+            if cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0] % 5 == 0:
+                emb1 = discord.Embed(title = "Награда!", description = f'Поздравляю вы достигли {cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]} уровня и получаете награду - ``10000``:leaves:', colour = discord.Color.green())
+                cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(10000, message.author.id))
+                connection.commit()
+                await chanel.send(embed = emb1)
         
 
 
@@ -175,11 +192,10 @@ async def on_guild_role_delete(role):
 
 
 
-# авто выдача роли ага да
 @bot.event
 async def on_member_join( member ):
     if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-        cursor.execute(f"INSERT INTO users VALUES('{member}', '{member.id}', 0, 0, 1, 0)")
+        cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30)")
         connection.commit()
     else:
         pass
