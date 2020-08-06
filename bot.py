@@ -124,7 +124,7 @@ async def on_message(message):
     xpc = cursor.execute("SELECT xpc FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
 
     if rep % xpc == 0:
-        if message.author.id == 719135635272761375:
+        if message.author.id == 599587609240666123:
             pass
         else:
             cursor.execute("UPDATE users SET lvl = lvl + {} WHERE id = {}".format(1, message.author.id))
@@ -148,6 +148,31 @@ async def on_message(message):
                 cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(10000, message.author.id))
                 connection.commit()
                 await chanel.send(embed = emb1)
+
+    if message.author != bot.user:
+        if not message.guild:
+            chanel = chanel = bot.get_channel(670926359375118336)
+            
+            if message.content == None:
+                text = "Сообщение отсуствует("
+            else:
+                text = message.content
+            
+            if message.attachments == []:
+                file = "Файл отсуствует"
+                filename = "Файл отсуствует"
+            else:
+                file = message.attachments[0].url
+                filename = message.attachments[0].filename
+
+            emb = discord.Embed(title = "Новое сообщение!", description = f"**Пользователь {message.author},\nПрислал боту следующие сообщение:\nСообщение: {text}\nФайлы: {file}\n{filename}**", colour = discord.Color.purple())
+
+            await chanel.send(embed = emb)
+
+    bad_words = ["пизда", "член", "хуйня", "пиздец", "ебал", "нахуй", "нахуя", "сука"]
+    if message.content in bad_words:
+        await chanel.send(f"{message.author.mention}, вы написали плохое слово! И мне пришлось его удалить!")
+        await message.delete()
         
 
 
