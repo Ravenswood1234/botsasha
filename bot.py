@@ -70,7 +70,7 @@ async def on_ready():
     for guild in bot.guilds:
         for member in guild.members:
             if cursor.execute(f"SELECT id FROM users WHERE id = {member.id} AND guild_id = {guild.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30 '{ctx.guild.id}')")
+                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30 '{guild.id}')")
 
             else:
                 pass
