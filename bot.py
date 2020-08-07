@@ -70,7 +70,7 @@ async def on_ready():
     for guild in bot.guilds:
         for member in guild.members:
             if cursor.execute(f"SELECT id FROM users WHERE id = {member.id} AND guild_id = {guild.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30 '{guild.id}')")
+                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30, {guild.id})").fetchone()
 
             else:
                 pass
@@ -218,11 +218,12 @@ async def on_guild_role_delete(role):
 
 @bot.event
 async def on_member_join( member ):
-    if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-        cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30 '{ctx.guild.id}')")
+    if cursor.execute(f"SELECT id FROM users WHERE id = {member.id} AND guild_id = {member.guild.id}").fetchone() is None:
+        cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30, '{member.guild.id}')").fetchone()
         connection.commit()
     else:
         pass
+
 
 
 
