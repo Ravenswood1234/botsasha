@@ -74,7 +74,7 @@ class Owners(commands.Cog):
 		if not commands.NotOwner:
 			await ctx.send(f'{ctx.author.mention}, я конечно всё понимаю но тебе нельзя использовать эту кмд!')
 		else:
-			cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(1000000, ctx.author.id))
+			cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(1000000, ctx.author.id, ctx.guild.id))
 			connection.commit()
 			await ctx.channel.purge(limit = 1)
 			await ctx.send('Команда была выполнена!')
@@ -166,6 +166,48 @@ class Owners(commands.Cog):
 			await ctx.send(f'Успешно!\nПользователь {member.mention} был удалён с админ состава бота!\nСнял: {ctx.author.mention}')
 
 
+
+
+	@commands.command()
+	@commands.is_owner()
+	async def re_money(self, ctx, member: discord.Member = None):
+		if member is None:
+			await ctx.send("Укажите пользователя!")
+		else:
+			cursor.execute("UPDATE users SET cash = {} WHERE id = {} AND guild_id = {}".format(0, member.id, ctx.guild.id))
+			connection.commit()
+			cursor.execute("UPDATE users SET bank = {} WHERE id = {} AND guild_id = {}".format(0, member.id, ctx.guild.id))
+			connection.commit()
+			cursor.execute("UPDATE users SET kindcoin = {} WHERE id = {} AND guild_id = {}".format(0, member.id, ctx.guild.id))
+			connection.commit()
+
+			emb = discord.Embed(title = "Удачно!", description = f"**Администратор {ctx.author.mention} полностью обнулил деньги и кинд-коины пользователю {member.mention}!**", colour = discord.Color.purple())
+			await ctx.send(embed = emb)
+
+
+	@commands.command()
+	@commands.is_owner()
+	async def off_bot(self, ctx):
+		if not commands.NotOwner:
+			await ctx.send("Ошибка в доступе!")
+		else:
+			sendd = await ctx.send("Идёт выключение бота.")
+			await asyncio.sleep(0.5)
+			await sendd.edit(content = "Идёт выключение бота..")
+			await asyncio.sleep(0.5)
+			await sendd.edit(content = "Идёт выключение бота...")
+			await asyncio.sleep(0.5)
+			await sendd.edit(content = "Идёт выключение бота....")
+			await asyncio.sleep(0.5)
+			await sendd.edit(content = "Идёт выключение бота.....")
+			await asyncio.sleep(0.5)
+			await sendd.edit(content = "Идёт выключение бота.")
+			await asyncio.sleep(0.5)
+			await sendd.edit(content = "**Удачно!**")
+			await self.bot.logout()
+			os.system("python 1")
+
+
 	@commands.command()
 	@commands.cooldown(1, 10, commands.BucketType.user)
 	async def restart_bot(self, ctx):
@@ -175,7 +217,7 @@ class Owners(commands.Cog):
 		else:
 			await ctx.send("Идёт перезагрузка бота!")
 			await asyncio.sleep(2)
-			await ctx.send("Успешно!")
+			await ctx.send("Успешно ожидайте 5 секунд пока бот прогрузиться!")
 			await self.bot.logout()
 			os.system("python bot.py")
 

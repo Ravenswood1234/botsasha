@@ -54,9 +54,10 @@ class Information(commands.Cog):
 				emb.add_field(name = 'Высшая Роль:', value = ctx.author.top_role)
 				emb.add_field(name = 'Аккаунт создан:', value = ctx.author.created_at.strftime('%A, %b %#d %Y'))
 				emb.add_field(name = f'Присоединился к {ctx.guild.name:}', value = ctx.author.joined_at.strftime('%A, %b %#d %Y'))
-				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0])
-				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0])
-				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0])
+				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Сообщений на этом сервере:", value = cursor.execute("SELECT message_count FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
 				emb.set_footer(icon_url = ctx.guild.icon_url)
 				if 'online' in ctx.author.desktop_status:
 					emb.add_field(name = 'Онлайн с :', value = '**Компьютера**')
@@ -74,9 +75,9 @@ class Information(commands.Cog):
 				emb.add_field(name = 'Высшая Роль:', value = ctx.author.top_role)
 				emb.add_field(name = 'Аккаунт создан:', value = ctx.author.created_at.strftime('%A, %b %#d %Y'))
 				emb.add_field(name = f'Присоединился к {ctx.guild.name}:', value = ctx.author.joined_at.strftime('%A, %b %#d %Y'))
-				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0])
-				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0])
-				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0])
+				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
 				emb.set_footer(icon_url = ctx.guild.icon_url)
 				if 'online' in ctx.author.desktop_status:
 					emb.add_field(name = 'Онлайн с :', value = '**Компьютера**')
@@ -95,9 +96,9 @@ class Information(commands.Cog):
 				emb.add_field(name = 'Высшая Роль:', value = member.top_role)
 				emb.add_field(name = 'Аккаунт создан:', value = member.created_at.strftime('%A, %b %#d %Y'))
 				emb.add_field(name = f'Присоединился к {ctx.guild.name}:', value = member.joined_at.strftime('%A, %b %#d %Y'))
-				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(member.id)).fetchone()[0])
-				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {}".format(member.id)).fetchone()[0])
-				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {}".format(member.id)).fetchone()[0])
+				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.set_footer(icon_url = ctx.guild.icon_url)
 				if 'online' in member.desktop_status:
 					emb.add_field(name = 'Онлайн с:', value = '**Компьютера**')
@@ -115,9 +116,9 @@ class Information(commands.Cog):
 				emb.add_field(name = 'Высшая Роль:', value = member.top_role)
 				emb.add_field(name = 'Аккаунт создан:', value = member.created_at.strftime('%A, %b %#d %Y'))
 				emb.add_field(name = f'Присоединился к {ctx.guild.name}:', value = member.joined_at.strftime('%A, %b %#d %Y'))
-				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(member.id)).fetchone()[0])
-				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {}".format(member.id)).fetchone()[0])
-				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {}".format(member.id)).fetchone()[0])
+				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.set_footer(icon_url = ctx.guild.icon_url)
 				if 'online' in member.desktop_status:
 					emb.add_field(name = 'Онлайн с:', value = '**Компьютера**')
@@ -132,7 +133,7 @@ class Information(commands.Cog):
 
 	@commands.command()
 	async def serverinfo(self, ctx):
-		
+
 		members = ctx.guild.members
 		online = len(list(filter(lambda x: x.status == discord.Status.online, members)))
 		offline = len(list(filter(lambda x: x.status == discord.Status.offline, members)))
@@ -166,7 +167,7 @@ class Information(commands.Cog):
 
 	@commands.command(aliases = ['инфобот', 'infobot', 'botinfo'])
 	async def __infobot(self, ctx):
-		
+
 		emb = discord.Embed( title = '**Информация о боте:**',  color = discord.Color.purple())
 		emb.description = (
 			'**Меня завут:\n'
@@ -181,7 +182,7 @@ class Information(commands.Cog):
 			f'```{len(self.bot.guilds)} серверах```'
 			)
 		await ctx.send(embed = emb)
-	
+
 
 	@commands.command()
 	async def update(self, ctx):

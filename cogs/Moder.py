@@ -19,7 +19,7 @@ class Moder(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages = True)
     async def say(self, ctx, *, arg=None):
-     
+
         if arg is None:
             await ctx.send(embed=discord.Embed(title="Не бузи!", description=f":x: **{ctx.author.mention}**, укажи **сообщение**, которое хочешь отправить от именни **бота** :x:", color=0xFF0000))
         else:
@@ -30,7 +30,7 @@ class Moder(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages = True)
     async def clear(self, ctx, amount = None):
-       
+
         await ctx.channel.purge(limit=int(amount))
         emb = discord.Embed(title = '**Удаление!**', description = f'**{ctx.author.mention}, удачно удалил сообщения!\nКоличество: {amount}!**', colour = discord.Color.green())
         await ctx.channel.send(embed = emb)
@@ -40,7 +40,7 @@ class Moder(commands.Cog):
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, member: discord.Member, *, reason = None):
-      
+
         if member is None:
             await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите кикнуть!')
         elif reason is None:
@@ -55,7 +55,7 @@ class Moder(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, member: discord.Member, *, reason = None):
-        
+
         if member is None:
             ctx.send('укажите пользователя которого хотите забанить!')
         elif reason is None:
@@ -66,13 +66,13 @@ class Moder(commands.Cog):
             await member.send(f'{member.mention}, вы были забанены на всегда!\nСервер: {ctx.guild.name}\nАдминистратор: {ctx.author.name}\nПричина: {reason}')
             await member.ban( reason = reason )
             await ctx.send( embed = emb )
-            
+
 
 
     @commands.command()
     @commands.has_permissions(manage_roles = True)
     async def mute(self, ctx, member: discord.Member = None, duration: int = None, tm: str = None, *, arg = None):
-       
+
         emb = discord.Embed(title='Mute', colour = discord.Color.purple())
         role = discord.utils.get(ctx.guild.roles, name="mute")
 
@@ -105,27 +105,27 @@ class Moder(commands.Cog):
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def unwarn(self, ctx, member: discord.Member = None, *, arg = None):
-        
+
         if member is None:
             ctx.send(f'{ctx.author.mention}, укажите пользователя у которого хотите снять варн!')
             self.unwarn.reset_cooldown(ctx)
         else:
             if arg == "all":
-                cursor.execute("UPDATE users SET warn = {} WHERE id = {}".format(0, member.id))
+                cursor.execute("UPDATE users SET warn = {} WHERE id = {} AND guild_id = {}".format(0, member.id, ctx.guild.id))
                 connection.commit()
                 emb = discord.Embed( title = '**Успешно!**', description = f'**У пользователя {member.mention}, были сняты все варн!**', colour = discord.Color.green())
                 await ctx.send(embed = emb)
             elif arg is None:
-                cursor.execute("UPDATE users SET warn = warn - {} WHERE id = {}".format(1, member.id))
+                cursor.execute("UPDATE users SET warn = warn - {} WHERE id = {} AND guild_id = {}".format(1, member.id, ctx.guild.id))
                 connection.commit()
-                emb = discord.Embed( title = '**Успешно!**', description = f'**У пользователя {member.mention}, был снят варн!\nКол-во варнов: {cursor.execute("SELECT warn FROM users WHERE id = {}".format(member.id)).fetchone()[0]}**', colour = discord.Color.green())
+                emb = discord.Embed( title = '**Успешно!**', description = f'**У пользователя {member.mention}, был снят варн!\nКол-во варнов: {cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0]}**', colour = discord.Color.green())
                 await ctx.send(embed = emb)
-            
+
 
     @commands.command()
     @commands.has_permissions(manage_roles = True)
     async def unmute(self, ctx, member: discord.Member = None):
-       
+
         role = discord.utils.get(ctx.guild.roles, name="mute")
         if member is None:
             await ctx.send(f'{ctx.author.mention}, вы не указали пользователя!')
@@ -136,7 +136,7 @@ class Moder(commands.Cog):
 
     @commands.command()
     async def report(self, ctx, *, arg):
-       
+
         chanel = chanel = self.bot.get_channel(719146135905894461)
         if arg is None:
             await ctx.send(f'{ctx.author.mention}, вы не указали причину репорта!')
@@ -151,7 +151,7 @@ class Moder(commands.Cog):
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def tempban(self, ctx, member: discord.Member = None, amount: int = None, tm: str = None, *, reason = None):
-      
+
         if member is None:
             await ctx.send(f'{ctx.author.mention}, укажите пользователя которого хотите временно забанить!')
         elif reason is None:
@@ -175,14 +175,14 @@ class Moder(commands.Cog):
                 await asyncio.sleep(amount * 86400)
             emb1 = discord.Embed(title = '**Разбан!**', description = f'**У {member.mention}, прошло время бана!({amount}{tm})**', colour = discord.Color.green())
             await ctx.guild.unban(member)
-            await ctx.send(embed = emb1)    
+            await ctx.send(embed = emb1)
 
-        
+
 
     @commands.command()
     @commands.has_permissions(administrator = True)
     async def give_role(self, ctx, member: discord.Member = None, role: discord.Role = None):
-        
+
         await ctx.channel.purge(limit = 1)
         if member is None:
             await ctx.send("укажите пользователя!")
@@ -194,13 +194,13 @@ class Moder(commands.Cog):
             await member.add_roles(role)
             emb = discord.Embed(title = '**Успешно!**', description = f'**Администратор {ctx.author.mention} выдал роль пользователю {member.mention}\n({role.mention})**', colour = discord.Color.purple())
             await ctx.send(embed = emb)
-            
+
             print(f'{ctx.author.name} использовал Команду /give_role')
 
     @commands.command()
     @commands.has_permissions(administrator = True)
     async def take_role(self, ctx, member: discord.Member = None, role: discord.Role = None):
-       
+
         await ctx.channel.purge(limit = 1)
         if not commands.NotOwner:
             await ctx.send("Не доступно!!")
@@ -214,7 +214,7 @@ class Moder(commands.Cog):
             await member.remove_roles(role)
             emb = discord.Embed(title = '**Успешно!**', description = f'**Администратор {ctx.author.mention} забрал роль у пользователю {member.mention}\n ({role.mention})**', colour = discord.Color.purple())
             await ctx.send(embed = emb)
-            
+
             print(f'{ctx.author.name} использовал Команду /take_role')
 
 
@@ -229,7 +229,7 @@ class Moder(commands.Cog):
     @commands.command(aliases = ['посчитай', 'Посчитай'])
     @commands.has_permissions(administrator = True)
     async def __blyat(self, ctx, lol: int = None):
-        
+
         if lol is None:
             await ctx.send(f'{ctx.author.mention}, введи число до которого будет считать бот!')
         xd = 1
@@ -271,12 +271,12 @@ class Moder(commands.Cog):
         elif reason is None:
             await ctx.send("Укажите причину!")
         else:
-            cursor.execute("UPDATE users SET warn = warn + {} WHERE id = {}".format(1, member.id))
+            cursor.execute("UPDATE users SET warn = warn + {} WHERE id = {} AND guild_id = {}".format(1, member.id, ctx.guild.id))
             connection.commit()
-            emb = discord.Embed(title = "Удачно!", description = f'**Администратор {ctx.author.mention} выдал warn пользователю {member.mention}\nПричина: {reason}\nКоличество варнов: {cursor.execute("SELECT warn FROM users WHERE id = {}".format(member.id)).fetchone()[0]}**', colour = discord.Color.purple())
+            emb = discord.Embed(title = "Удачно!", description = f'**Администратор {ctx.author.mention} выдал warn пользователю {member.mention}\nПричина: {reason}\nКоличество варнов: {cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0]}**', colour = discord.Color.purple())
             await ctx.send(embed = emb)
 
-            if cursor.execute("SELECT warn FROM users WHERE id = {}".format(member.id)).fetchone()[0] >= 3:
+            if cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0] >= 3:
                 await member.ban(reason = "3/3 warns|kindbot")
                 emb1 = discord.Embed(title = "3/3", description = f"**У пользователя {member.mention}, было 3 варна и по этому он был забанен!**", colour = discord.Color.purple())
                 await ctx.send(embed = emb1)

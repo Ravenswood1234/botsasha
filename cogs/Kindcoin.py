@@ -42,12 +42,12 @@ class Kindcoin(commands.Cog):
 		cost = now_cost * amount
 		if amount is None:
 			await ctx.send('Введите число kindcoin которые хотите купить')
-		elif cursor.execute("SELECT cash FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0] < now_cost:
+		elif cursor.execute("SELECT cash FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0] < now_cost:
 			await ctx.send(f'У вас не достаточно денег! Стоимость kindcoin {now_cost}')
 		else:
-			cursor.execute("UPDATE users SET cash = cash - {} WHERE id = {}".format(cost, ctx.author.id))
+			cursor.execute("UPDATE users SET cash = cash - {} WHERE id = {} AND guild_id = {}".format(cost, ctx.author.id, ctx.guild.id))
 			connection.commit()
-			cursor.execute("UPDATE users SET kindcoin = kindcoin + {} WHERE id = {}".format(amount, ctx.author.id))
+			cursor.execute("UPDATE users SET kindcoin = kindcoin + {} WHERE id = {} AND guild_id = {}".format(amount, ctx.author.id, ctx.guild.id))
 			connection.commit()
 			emb = discord.Embed(title = 'Успешно!', description = f'Пользователь {ctx.author.mention}, купил {amount}', colour = discord.Color.green())
 			await ctx.send(embed = emb)
@@ -57,16 +57,16 @@ class Kindcoin(commands.Cog):
 	async def sell_kindcoin(self, ctx, amount: int = None):
 		old_cost = cursor.execute("SELECT old_kindcoin FROM users WHERE id = {}".format(558235304138637332)).fetchone()[0]
 		now_cost = cursor.execute("SELECT cost_kindcoin FROM users WHERE id = {}".format(558235304138637332)).fetchone()[0]
-		
+
 		cost = now_cost * amount
 		if amount is None:
 			await ctx.send('Введите число kindcoin которые хотите продать')
-		elif cursor.execute("SELECT kindcoin FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0] < amount:
+		elif cursor.execute("SELECT kindcoin FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0] < amount:
 			await ctx.send(f'У вас не достаточно kindcoin, у вас {cursor.execute("SELECT kindcoin FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0]} kindcoin, а вы пытаетесь продать {amount}')
 		else:
-			cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(cost, ctx.author.id))
+			cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(cost, ctx.author.id, ctx.guild.id))
 			connection.commit()
-			cursor.execute("UPDATE users SET kindcoin = kindcoin - {} WHERE id = {}".format(amount, ctx.author.id))
+			cursor.execute("UPDATE users SET kindcoin = kindcoin - {} WHERE id = {} AND guild_id = {}".format(amount, ctx.author.id, ctx.guild.id))
 			connection.commit()
 			emb = discord.Embed(title = 'Успешно!', description = f'Пользователь {ctx.author.mention}, продал {amount} kindcoin', colour = discord.Color.green())
 			await ctx.send(embed = emb)
@@ -82,7 +82,7 @@ class Kindcoin(commands.Cog):
 		elif amount > 10000:
 			await ctx.send(f'{ctx.author.mention}, вы не можите выдать больше 10000 за раз!')
 		else:
-			cursor.execute("UPDATE users SET kindcoin = kindcoin + {} WHERE id = {}".format(amount, ctx.author.id))
+			cursor.execute("UPDATE users SET kindcoin = kindcoin + {} WHERE id = {} AND guild_id = {}".format(amount, ctx.author.id, ctx.guild.id))
 			connection.commit()
 			emb = discord.Embed(title = 'Успешно', description = f'**Администратор {ctx.author.mention}, выдал {amount} kindcoins пользователю {member.mention}**', colour = discord.Color.green())
 			await ctx.send(embed = emb)
@@ -94,10 +94,10 @@ class Kindcoin(commands.Cog):
 			await ctx.send('Введите Пользователя у которому хотите забрать kindcoins')
 		elif amount is None:
 			await ctx.send('Введите число kindcoin которые хотите забрать')
-		elif cursor.execute("SELECT kindcoin FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0] <= 0:
-			await ctx.send(f'У {member}, и так осталось всево-лишь {cursor.execute("SELECT kindcoin FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0]} kindcoin, куда ещё то забирать??')
+		elif cursor.execute("SELECT kindcoin FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0] <= 0:
+			await ctx.send(f'У {member}, и так осталось всево-лишь {cursor.execute("SELECT kindcoin FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0]} kindcoin, куда ещё то забирать??')
 		else:
-			cursor.execute("UPDATE users SET kindcoin = kindcoin - {} WHERE id = {}".format(amount, ctx.author.id))
+			cursor.execute("UPDATE users SET kindcoin = kindcoin - {} WHERE id = {} AND guild_id = {}".format(amount, ctx.author.id, ctx.guild.id))
 			connection.commit()
 			emb = discord.Embed(title = 'Успешно', description = f'**Администратор {ctx.author.mention}, забрал {amount} kindcoins у Пользователя {member.mention}**', colour = discord.Color.green())
 			await ctx.send(embed = emb)

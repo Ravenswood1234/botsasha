@@ -35,7 +35,7 @@ class Shop(commands.Cog):
 	@commands.command()
 	@commands.has_permissions( administrator = True )
 	async def add_shop(self, ctx, role: discord.Role = None, cost: int = None ):
-		
+
 		emb = discord.Embed(title = 'Успешно!', description = 'В магазин была успешно добавлено новая роль!', colour = discord.Color.red())
 
 		if role is None:
@@ -55,7 +55,7 @@ class Shop(commands.Cog):
 
 	@commands.command()
 	async def buy_role(self, ctx, role: discord.Role = None):
-		
+
 		if role is None:
 			await ctx.send(f'**{ctx.author}**, укажите роль которую хотите купить!')
 		else:
@@ -70,14 +70,14 @@ class Shop(commands.Cog):
 
 				emb = discord.Embed(title = 'Успешно!', description = f'**Пользователь {ctx.author.mention}, купил роль: {role}**')
 				await ctx.send(embed = emb)
-        
-        
+
+
 
 
 	@commands.command()
 	@commands.has_permissions( administrator = True )
 	async def remove_shop(self, ctx, role: discord.Role = None):
-		
+
 		emb = discord.Embed( title = 'Роль удалена!', description = f'Пользователь {ctx.author}, удалил роль из магазина!', colour = discord.Color.red())
 		if role is None:
 			await ctx.send(f'**{ctx.author}**, Укажите роль которую хотите удалить!')
