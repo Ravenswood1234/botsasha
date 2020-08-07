@@ -39,7 +39,7 @@ cursor.execute("""CREATE TABLE IF NOT EXISTS users (
         old_kindcoin BIGINT,
         message_count BIGINT,
         xpc BIGINT,
-        zamet TEXT
+        guild_id BIGINT
     )""")
     
 cursor.execute("""CREATE TABLE IF NOT EXISTS shop (
@@ -69,8 +69,8 @@ async def on_ready():
 
     for guild in bot.guilds:
         for member in guild.members:
-            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30, 'none')")
+            if cursor.execute(f"SELECT id FROM users WHERE id = {member.id} AND guild_id = {guild.id}").fetchone() is None:
+                cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30 '{ctx.guild.id}')")
                 
             else:
                 pass
@@ -113,39 +113,39 @@ async def on_message(message):
 
     chanel = chanel = bot.get_channel(message.channel.id)
 
-    cursor.execute("UPDATE users SET message_count = message_count + {} WHERE id = {}".format(1, message.author.id))
+    cursor.execute("UPDATE users SET message_count = message_count + {} WHERE id = {} AND guild_id = {}".format(1, message.author.id, message.guild.id))
     connection.commit()
 
-    cursor.execute("UPDATE users SET rep = rep + {} WHERE id = {}".format(1, message.author.id))
+    cursor.execute("UPDATE users SET rep = rep + {} WHERE id = {} AND guild_id = {}".format(1, message.author.id, message.guild.id))
     connection.commit()
 
-    rep = cursor.execute("SELECT rep FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+    rep = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(message.author.id, message.guild.id)).fetchone()[0]
 
-    xpc = cursor.execute("SELECT xpc FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+    xpc = cursor.execute("SELECT xpc FROM users WHERE id = {} AND guild_id = {}".format(message.author.id, message.guild.id)).fetchone()[0]
 
     if rep % xpc == 0:
         if message.author.id == 599587609240666123:
             pass
         else:
-            cursor.execute("UPDATE users SET lvl = lvl + {} WHERE id = {}".format(1, message.author.id))
+            cursor.execute("UPDATE users SET lvl = lvl + {} WHERE id = {} AND guild_id = {}".format(1, message.author.id, message.guild.id))
             connection.commit()
-            new_lvl = cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]
+            new_lvl = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(message.author.id, message.guild.id)).fetchone()[0]
 
             emb = discord.Embed(title = "**Lvl Up!**", description = f"**У пользователя: {message.author.name} повысился уровень до ``{new_lvl}``!**", colour = discord.Color.purple())
 
             await chanel.send(embed = emb)
 
-            cursor.execute("UPDATE users SET rep = {} WHERE id = {}".format(0, message.author.id))
+            cursor.execute("UPDATE users SET rep = {} WHERE id = {} AND guild_id = {}".format(0, message.author.id, message.guild.id))
             connection.commit()
-    
+
             xpc = xpc + 30
 
-            cursor.execute("UPDATE users SET xpc = {} WHERE id = {}".format(xpc, message.author.id))
+            cursor.execute("UPDATE users SET xpc = {} WHERE id = {} AND guild_id = {}".format(xpc, message.author.id, message.guild.id))
             connection.commit()
 
-            if cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0] % 5 == 0:
-                emb1 = discord.Embed(title = "Награда!", description = f'Поздравляю вы достигли {cursor.execute("SELECT lvl FROM users WHERE id = {}".format(message.author.id)).fetchone()[0]} уровня и получаете награду - ``10000``:leaves:', colour = discord.Color.green())
-                cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {}".format(10000, message.author.id))
+            if cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(message.author.id, message.guild.id)).fetchone()[0] % 5 == 0:
+                emb1 = discord.Embed(title = "Награда!", description = f'Поздравляю вы достигли {cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(message.author.id, message.guild.id)).fetchone()[0]} уровня и получаете награду - ``10000``:leaves:', colour = discord.Color.green())
+                cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(10000, message.author.id, message.guild.id))
                 connection.commit()
                 await chanel.send(embed = emb1)
 
@@ -220,7 +220,7 @@ async def on_guild_role_delete(role):
 @bot.event
 async def on_member_join( member ):
     if cursor.execute(f"SELECT id FROM users WHERE id = {member.id}").fetchone() is None:
-        cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30)")
+        cursor.execute(f"INSERT INTO users VALUES('{member.id}', 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 30 '{ctx.guild.id}')")
         connection.commit()
     else:
         pass
