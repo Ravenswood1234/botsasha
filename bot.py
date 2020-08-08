@@ -177,11 +177,10 @@ async def on_message(message):
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound ):
-        await ctx.send(embed = discord.Embed(description = f'** {ctx.author.name}, данной команды не существует.**', color=0x0c0c0c))
-    elif isinstance(error, commands.CommandOnCooldown ):
+    if isinstance(error, commands.CommandOnCooldown ):
         await ctx.send(f'Ошибка! Вы сможите использовать эту команду через: {round(error.retry_after)} секунд')
     else:
+        await ctx.send(embed = discord.Embed(description = f"```{error}``` **Код не был выполнен с этой ошибкой!**", colour = discord.Color.red()))
         raise error
 
 
