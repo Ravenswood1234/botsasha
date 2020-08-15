@@ -275,7 +275,7 @@ class Owners(commands.Cog):
 		if member is None:
 			await ctx.send("Укажите пользователя которого хотите принять в администрацию бота!")
 		else:
-			emb = discord.Embed(title = "Ура!", description = f"**Пользователь {member.mention}, был принят на ИСП. срок в модерацию севрера!\nИспытательный срок закончиться автоматически через 2 дня!**", colour = discord.Color.green())
+			emb = discord.Embed(title = "Ура!", description = f"**Пользователь {member.mention}, был принят на ИСП. срок в модерацию сервера!\nИспытательный срок закончиться автоматически через 2 дня!**", colour = discord.Color.green())
 			emb.set_footer(text = f"Заявку принял Администратор {ctx.author}", icon_url = ctx.author.avatar_url)
 			await ctx.send(embed = emb)
 
@@ -294,6 +294,20 @@ class Owners(commands.Cog):
 			await member.add_roles(role2)
 
 			await member.send("Ваш исп.срок на модерацию был окончен! Поздравляем!")
+
+
+
+	@commands.command()
+	async def reject_moder(self, ctx, member: discord.Member = None):
+		if member is None:
+			await ctx.send("Укажите пользователя!")
+		else:
+			emb = discord.Embed(title = "Увы!", description = f"**Пользователь {member.mention}, не был принят на ИСП. срок в модерацию сервера!**", colour = discord.Color.red())
+			emb.set_footer(text = f"Заявку отклонил Администратор {ctx.author}", icon_url = ctx.author.avatar_url)
+			await ctx.send(embed = emb)
+
+			emb1 = discord.Embed(title = "Увы(", description = f"{member.mention}, Вы не были приняты в модерацию! Проверьте канал где вы оставляли заявку!", colour = discord.Color.red())
+			await member.send(embed = emb1)
 
 
 
