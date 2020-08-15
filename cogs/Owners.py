@@ -12,6 +12,10 @@ import asyncio
 import os
 import json
 
+#WebHook
+from discord import Webhook, AsyncWebhookAdapter
+import aiohttp
+
 connection = sqlite3.connect('server.db')
 cursor = connection.cursor()
 
@@ -248,6 +252,21 @@ class Owners(commands.Cog):
 				await chat.set_permissions(role, overwrite = overwrite )
 
 
+
+	@commands.command()
+	async def news(self, ctx, embb = None, *, arg = None):
+		if embb is None:
+			await ctx.send("Ошибка!")
+		elif arg is None:
+			await ctx.send("Введите сообщение!")
+		elif embb == "1":	
+			async with aiohttp.ClientSession() as session:
+				webhook = Webhook.from_url('https://discordapp.com/api/webhooks/744203890429263942/XQOaaKC5XOgFbQPcNZ3AumAUPNtGag7oM8Pzi8GC3C5UFqtqmAdoVAw-_775TZ7ePbat', adapter=AsyncWebhookAdapter(session))
+				await webhook.send(embed = discord.Embed(description = arg, colour = discord.Color.purple()), username='Новости')
+		elif embb == "0":
+			async with aiohttp.ClientSession() as session:
+				webhook = Webhook.from_url('https://discordapp.com/api/webhooks/744203890429263942/XQOaaKC5XOgFbQPcNZ3AumAUPNtGag7oM8Pzi8GC3C5UFqtqmAdoVAw-_775TZ7ePbat', adapter=AsyncWebhookAdapter(session))
+				await webhook.send(arg, username='Новости')
 
 def setup(bot):
 	bot.add_cog(Owners(bot))
