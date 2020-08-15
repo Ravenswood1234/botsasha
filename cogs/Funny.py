@@ -102,7 +102,7 @@ class Funny(commands.Cog):
 
 
 	@commands.command()
-	@commands.cooldown(1, 60, commands.BucketType.user)
+	@commands.cooldown(1, 10, commands.BucketType.user)
 	async def duel(self, ctx, member: discord.Member = None, amount: int = None ):
 		a = random.randint(1, 2)
 

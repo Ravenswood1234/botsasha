@@ -73,18 +73,42 @@ class Moder(commands.Cog):
     @commands.has_permissions(manage_roles = True)
     async def mute(self, ctx, member: discord.Member = None, duration: int = None, tm: str = None, *, arg = None):
 
-        emb = discord.Embed(title='Mute', colour = discord.Color.purple())
-        role = discord.utils.get(ctx.guild.roles, name="mute")
+        try:
 
-        if member is None:
-            await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите замутить Пример: /mute @Jhon_San 10 d Оск')
-        elif tm is None:
-            await ctx.send('Укажите сколько будет действовать мут s = секунд, m = минут, h = час, d = день Пример: /mute @Jhon_San 10 d Оск')
-        elif duration < 1:
-            await ctx.send(f'{ctx.author.name}, укажите время мута больше чем 1 секунда! Пример: /mute @Jhon_San 10 d Оск')
-        elif arg is None:
-            await ctx.send(f'{ctx.author.name}, укажите причину мута! Пример: /mute @Jhon_San 10 d Оск')
-        else:
+            emb = discord.Embed(title='Mute', colour = discord.Color.purple())
+            role = discord.utils.get(ctx.guild.roles, name="mute")
+
+            if member is None:
+                await ctx.send(f'{ctx.author.name}, укажите пользователя которого хотите замутить Пример: /mute @Jhon_San 10 d Оск')
+            elif tm is None:
+                await ctx.send('Укажите сколько будет действовать мут s = секунд, m = минут, h = час, d = день Пример: /mute @Jhon_San 10 d Оск')
+            elif duration < 1:
+                await ctx.send(f'{ctx.author.name}, укажите время мута больше чем 1 секунда! Пример: /mute @Jhon_San 10 d Оск')
+            elif arg is None:
+                await ctx.send(f'{ctx.author.name}, укажите причину мута! Пример: /mute @Jhon_San 10 d Оск')
+            else:
+                emb.add_field(name="Администратор:", value=f'{ctx.author.mention} **замутил пользователя**: {member.mention} __**на  {duration} {tm}.**__')
+                emb.add_field(name="Причина:", value=f'**{arg}**')
+                await ctx.send(embed=emb)
+                await member.add_roles(role)
+                await member.send(f'{member.mention}, на сервере "{ctx.guild.name}", вам был выдан мут на {duration}{tm}\nПричина: {arg}')
+                if tm == 's':
+                    await asyncio.sleep(duration)
+                elif tm == 'm':
+                    await asyncio.sleep(duration * 60)
+                elif tm == 'h':
+                    await asyncio.sleep(duration * 3600)
+                elif tm == 'd':
+                    await asyncio.sleep(duration * 86400)
+                embed = discord.Embed(title = "**Время прошло!**", description = f'**У пользователя {member.mention}, прошло время мута!({duration}{tm})**', colour = discord.Color.green())
+                await ctx.send(embed=embed)
+                await member.remove_roles(role)
+        except:
+            role = await ctx.guild.create_role(name="mute")
+
+            await role.edit(name='mute', send_messages=False, send_tts_messages=False, read_messages=True, hoist=True)
+            rolee = discord.utils.get(ctx.guild.roles, name = "mute")
+
             emb.add_field(name="Администратор:", value=f'{ctx.author.mention} **замутил пользователя**: {member.mention} __**на  {duration} {tm}.**__')
             emb.add_field(name="Причина:", value=f'**{arg}**')
             await ctx.send(embed=emb)
@@ -101,6 +125,12 @@ class Moder(commands.Cog):
             embed = discord.Embed(title = "**Время прошло!**", description = f'**У пользователя {member.mention}, прошло время мута!({duration}{tm})**', colour = discord.Color.green())
             await ctx.send(embed=embed)
             await member.remove_roles(role)
+
+            overwrite = discord.PermissionOverwrite()
+            overwrite.send_messages = False
+            for chat in ctx.guild.channels:
+                await chat.set_permissions(rolee, overwrite=overwrite)
+
 
     @commands.command()
     @commands.has_permissions(kick_members = True)
