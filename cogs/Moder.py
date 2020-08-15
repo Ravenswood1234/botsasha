@@ -29,13 +29,20 @@ class Moder(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_messages = True)
-    async def clear(self, ctx, amount = None):
+    async def clear(self, ctx, amount: int = None):
 
-        await ctx.channel.purge(limit=int(amount))
-        emb = discord.Embed(title = '**Удаление!**', description = f'**{ctx.author.mention}, удачно удалил сообщения!\nКоличество: {amount}!**', colour = discord.Color.green())
-        await ctx.channel.send(embed = emb)
-        await asyncio.sleep(2)
-        await ctx.channel.purge(limit = 1)
+        if amount is None:
+            pass
+
+        else:
+
+            amount1 = amount + 1
+
+            await ctx.channel.purge(limit = amount1)
+            emb = discord.Embed(title = '**Удаление!**', description = f'**{ctx.author.mention}, удачно удалил сообщения!\nКоличество: {amount}!**', colour = discord.Color.green())
+            await ctx.channel.send(embed = emb)
+            await asyncio.sleep(2)
+            await ctx.channel.purge(limit = 1)
 
     @commands.command()
     @commands.has_permissions(kick_members = True)
