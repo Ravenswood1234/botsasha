@@ -110,9 +110,11 @@ class Funny(commands.Cog):
 		if ctx.author == member:
 			await ctx.send("С собой то вам зачем сражаться?")
 			self.duel.reset_cooldown(ctx)
-		if member is None:
+		elif member is None:
 			await ctx.send('укажите пользователя с которым хотите саревноваться')
 			self.duel.reset_cooldown(ctx)
+		elif member.status == discord.Status.offline:
+			await ctx.send("Вы не можите сражаться с пользователем который оффлайн")
 		elif amount is None:
 			await ctx.send('Укажите сумму за которую хотите биться!')
 			self.duel.reset_cooldown(ctx)
@@ -188,6 +190,9 @@ class Funny(commands.Cog):
 		elif member is None:
 			await ctx.send('**Укажите пользователя с которым хотите саревноваться!**')
 			self.run.reset_cooldown(ctx)
+		elif member.status == discord.Status.offline:
+			await ctx.send("Вы не можите сражаться с пользователем который оффлайн")
+			
 		else:
 			emb = discord.Embed(title = '**Гонка!!**', description = f'Пользователь: {ctx.author.name}, бросил вызов в гонке пользователю: {member.mention}! Гонка началась! Ожидайте 10 секунд', colour = discord.Color.red())
 			await ctx.send(embed = emb)

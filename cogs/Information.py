@@ -46,7 +46,7 @@ class Information(commands.Cog):
 	async def profile(self, ctx, member: discord.Member = None):
 		if member is None:
 			if cursor.execute("SELECT adminstaff FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0] == 1:
-				emb = discord.Embed(title = f'**Информация о пользователя {ctx.author.name} !**', description = '**Являеться разработчиком бота!:white_check_mark:**', colour = discord.Color.blue())
+				emb = discord.Embed(title = f'**Информация о пользователя {ctx.author.name}**', description = '**Являеться разработчиком бота:white_check_mark:**', colour = discord.Color.blue())
 				emb.set_thumbnail(url = ctx.author.avatar_url)
 				emb.add_field(name = '**Никнэйм:**', value = ctx.author.name)
 				emb.add_field(name = 'ID:', value = ctx.author.id)
@@ -88,7 +88,7 @@ class Information(commands.Cog):
 				await ctx.send(embed = emb)
 		else:
 			if cursor.execute("SELECT adminstaff FROM users WHERE id = {}".format(member.id)).fetchone()[0] == 1:
-				emb = discord.Embed(title = f'**Информация о пользователя {member.name} !**', description = '**Являеться разработчиком бота!:white_check_mark:**',	 colour = discord.Color.blue())
+				emb = discord.Embed(title = f'**Информация о пользователя {member.name} !**', description = '**Являеться разработчиком бота:white_check_mark:**',	 colour = discord.Color.blue())
 				emb.set_thumbnail(url = member.avatar_url)
 				emb.add_field(name = '**Никнэйм:**', value = member.name)
 				emb.add_field(name = 'ID:', value = member.id)

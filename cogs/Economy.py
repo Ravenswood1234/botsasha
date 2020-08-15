@@ -186,6 +186,8 @@ class Economy(commands.Cog):
 			await ctx.send('Укажите пользователя!')
 		elif ctx.author.id == member.id:
 			await ctx.send('Ты не сможешь передать деньги самому себе!')
+		elif member.status == discord.Status.offline:
+			await ctx.send('Вы не можите передать человеку деньги когда он оффлайн')
 		elif amount is None:
 			await ctx.send('Укажите сумму для передачи!')
 		elif amount > cursor.execute("SELECT cash FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0]:
@@ -199,7 +201,6 @@ class Economy(commands.Cog):
 			connection.commit()
 			emb = discord.Embed(title = '**Удачно!**', description = f'**Пользователь {ctx.author.mention} передал {amount}:leaves: пользователю {member.mention}**', colour = discord.Color.green())
 			await ctx.send(embed = emb)
-
 
 def setup(bot):
 	bot.add_cog(Economy(bot))

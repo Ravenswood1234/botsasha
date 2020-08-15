@@ -3,14 +3,20 @@ from discord.ext import commands
 from config import settings
 import datetime
 from Cybernator import Paginator as pag
+import sqlite3
 
 now = datetime.datetime.now()
+
+connection = sqlite3.connect("server.db")
+cursor = connection.cursor()
 
 PREFIX = settings['PREFIX']
 
 class Helps(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.connection = sqlite3.connect('server.db')
+		self.cursor = self.connection.cursor()
 
 	@commands.group()
 	async def help(self, ctx):
@@ -24,6 +30,7 @@ class Helps(commands.Cog):
 			emb.add_field(name = '**`economy`**', value = '**Команды эканомики\n`work, shop` [...]**')
 			emb.add_field(name = '**`lvl`**', value = '**Команды системы уровней.\n`myrep, lvl` [...]**')
 			emb.add_field(name = '**`kindcoin`**', value = '**Команды системы kindcoin\n`kindcoin, buy_kindcoin` [...]**')
+			emb.add_field(name = '**`owners`**', value = '**Команды бота для создателей бота!**')
 			
 			await ctx.send(embed = emb)
 		
@@ -134,6 +141,24 @@ class Helps(commands.Cog):
 
 		page = pag(self.bot, message, only = ctx.author, use_more = False, embeds = embs)
 		await page.start()
+
+
+	@help.command()
+	async def owners(self, ctx):
+		if cursor.execute("SELECT adminstaff FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0] == 1:
+			emb = discord.Embed(title = "**Команды основателя:**", colour = discord.Color.red())
+
+			emb.add_field(name = f'{PREFIX}inplay', value = 'Поставить боту статус')
+			emb.add_field(name = f'{PREFIX}add_adminstaff', value = 'Добавить пользователя в адми состав бота')
+			emb.add_field(name = f'{PREFIX}remove_adminstaff', value = 'Удалить пользователя из адми состава')
+			emb.add_field(name = f'{PREFIX}re_money', value = 'Полностью обнулить Статистику(деньги) пользователю')
+			emb.add_field(name = f'{PREFIX}off_bot', value = 'Выключить бота')
+			emb.add_field(name = f'{PREFIX}restart_bot', value = 'Перезагрузить бота')
+
+			await ctx.send(embed = emb)
+
+		else:
+			await ctx.send("Вам не доступен этот раздел!")
 
 
 def setup(bot):
