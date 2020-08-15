@@ -209,6 +209,7 @@ class Owners(commands.Cog):
 
 
 	@commands.command()
+	@commands.is_owner()
 	@commands.cooldown(1, 10, commands.BucketType.user)
 	async def restart_bot(self, ctx):
 		if cursor.execute("SELECT adminstaff FROM users WHERE id = {}".format(ctx.author.id)).fetchone()[0] == 0:
@@ -220,6 +221,31 @@ class Owners(commands.Cog):
 			await ctx.send("Успешно ожидайте 5 секунд пока бот прогрузиться!")
 			await self.bot.logout()
 			os.system("python bot.py")
+
+
+
+	@commands.command()
+	@commands.is_owner()
+	async def create_role(self, ctx, name = None, perm = None):
+		if name is None:
+			await ctx.send("Укажите название")
+		elif perm is None:
+			await ctx.send("Укажите сможет ли человек с этой ролью писать сообщения. 1 - да, 0 - нет")
+		else:
+			role = await ctx.guild.create_role(name = name)
+
+			if perm == "1":
+				pass
+			elif perm == "0":
+				role.edit(send_messages = False, send_tts_messages = False)
+
+			await ctx.send(f"Роль {name}, была удачно создана!")
+
+
+			overwrite = discord.PermissionOverwrite()
+			overwrite.send_messages = False
+			for chat in ctx.guild.channels:
+				await chat.set_permissions(role, overwrite = overwrite )
 
 
 
