@@ -78,6 +78,7 @@ class Information(commands.Cog):
 				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
 				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
 				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Сообщений на этом сервере:", value = cursor.execute("SELECT message_count FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0])
 				emb.set_footer(icon_url = ctx.guild.icon_url)
 				if 'online' in ctx.author.desktop_status:
 					emb.add_field(name = 'Онлайн с :', value = '**Компьютера**')
@@ -99,6 +100,7 @@ class Information(commands.Cog):
 				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Сообщений на этом сервере:", value = cursor.execute("SELECT message_count FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.set_footer(icon_url = ctx.guild.icon_url)
 				if 'online' in member.desktop_status:
 					emb.add_field(name = 'Онлайн с:', value = '**Компьютера**')
@@ -119,6 +121,7 @@ class Information(commands.Cog):
 				emb.add_field(name = f'Уровень:', value = cursor.execute("SELECT lvl FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.add_field(name = 'Exp:', value = cursor.execute("SELECT rep FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.add_field(name = "Предупреждений:", value = cursor.execute("SELECT warn FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
+				emb.add_field(name = "Сообщений на этом сервере:", value = cursor.execute("SELECT message_count FROM users WHERE id = {} AND guild_id = {}".format(member.id, ctx.guild.id)).fetchone()[0])
 				emb.set_footer(icon_url = ctx.guild.icon_url)
 				if 'online' in member.desktop_status:
 					emb.add_field(name = 'Онлайн с:', value = '**Компьютера**')
