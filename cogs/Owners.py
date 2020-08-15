@@ -268,6 +268,35 @@ class Owners(commands.Cog):
 				webhook = Webhook.from_url('https://discordapp.com/api/webhooks/744203890429263942/XQOaaKC5XOgFbQPcNZ3AumAUPNtGag7oM8Pzi8GC3C5UFqtqmAdoVAw-_775TZ7ePbat', adapter=AsyncWebhookAdapter(session))
 				await webhook.send(arg, username='Новости')
 
+
+
+	@commands.command()
+	async def accept_moder(self, ctx, member: discord.Member = None):
+		if member is None:
+			await ctx.send("Укажите пользователя которого хотите принять в администрацию бота!")
+		else:
+			emb = discord.Embed(title = "Ура!", description = f"**Пользователь {member.mention}, был принят на ИСП. срок в модерацию севрера!\nИспытательный срок закончиться автоматически через 2 дня!**", colour = discord.Color.green())
+			emb.set_footer(text = f"Заявку принял Администратор {ctx.author}", icon_url = ctx.author.avatar_url)
+			await ctx.send(embed = emb)
+
+			emb1 = discord.Embed(title = "Поздравляю", description = f"Поздравляем {member.mention}, Вы были приняты в модерацию! Проверьте канал где вы оставляли заявку!", colour = discord.Color.green())
+			await member.send(embed = emb1)
+
+
+			role = discord.utils.get(ctx.guild.roles, id = 729589584060612608)
+			role2 = discord.utils.get(ctx.guild.roles, id = 729590072680382535)
+
+			await member.add_roles(role)
+
+			await asyncio.sleep(172800)
+
+			await member.remove_roles(role)
+			await member.add_roles(role2)
+
+			await member.send("Ваш исп.срок на модерацию был окончен! Поздравляем!")
+
+
+
 def setup(bot):
 	bot.add_cog(Owners(bot))
 	print('[COGS] Owners be loaded')
