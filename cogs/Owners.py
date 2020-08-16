@@ -294,6 +294,7 @@ class Owners(commands.Cog):
 			await member.add_roles(role2)
 
 			await member.send("Ваш исп.срок на модерацию был окончен! Поздравляем!")
+			await ctx.author.send(f"У пользователя {member.mention} был снять Испытательный срок!")
 
 
 
@@ -308,6 +309,26 @@ class Owners(commands.Cog):
 
 			emb1 = discord.Embed(title = "Увы(", description = f"{member.mention}, Вы не были приняты в модерацию! Проверьте канал где вы оставляли заявку!", colour = discord.Color.red())
 			await member.send(embed = emb1)
+
+
+
+	@commands.command()
+	async def un_isp(self, ctx, member: discord.Member = None):
+
+
+		role = discord.utils.get(ctx.guild.roles, id = 729589584060612608)
+		role2 = discord.utils.get(ctx.guild.roles, id = 729590072680382535)
+
+
+		if member is None:
+			await ctx.send("Укажите пользователя!")
+		else:
+			await member.remove_roles(role)
+			await member.add_roles(role2)
+
+			await member.send("Ваш исп.срок на модерацию был окончен! Поздравляем!")
+
+			await ctx.author.send(f"У пользователя {member.mention} был снять Испытательный срок!")
 
 
 

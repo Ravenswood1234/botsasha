@@ -63,8 +63,6 @@ class Economy(commands.Cog):
 	async def put(self, ctx, amount: int = None):
 		if amount is None:
 			await ctx.send('Укажите сумму которую хотите положить на свой банковский счёт!')
-		elif amount is None:
-			await ctx.send
 		elif amount > cursor.execute("SELECT cash FROM users WHERE id = {} AND guild_id = {}".format(ctx.author.id, ctx.guild.id)).fetchone()[0]:
 			await ctx.send('У вас не достаточно денег на руках!')
 		elif amount < 1:
@@ -201,6 +199,58 @@ class Economy(commands.Cog):
 			connection.commit()
 			emb = discord.Embed(title = '**Удачно!**', description = f'**Пользователь {ctx.author.mention} передал {amount}:leaves: пользователю {member.mention}**', colour = discord.Color.green())
 			await ctx.send(embed = emb)
+
+
+
+	@commands.command()
+	@commands.cooldown(1, 30, commands.BucketType.user)
+	async def casino(self, ctx):
+
+		n1 = random.choice([':white_large_square:', ':orange_square:', ':blue_square:'])
+		n2 = random.choice([':white_large_square:', ':orange_square:', ':blue_square:'])
+		n3 = random.choice([':white_large_square:', ':orange_square:', ':blue_square:'])
+
+		emb = discord.Embed(title = "**Казино**", description = f"**Баран:\n\n{n1} | {n2} | {n3}**", colour = discord.Color.purple())
+
+		if n1 == n2 or n1 == n3:
+			if n1 == n2 and n3:
+				emb.add_field(name = f'**Вы выиграли 10000**', value = ":leaves:")
+
+				cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(10000, ctx.author.id, ctx.guild.id))
+				connection.commit()
+			else:
+				emb.add_field(name = f'**Вы выиграли 3000**', value = ":leaves:")
+
+				cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(3000, ctx.author.id, ctx.guild.id))
+				connection.commit()
+		elif n2 == n1 or n2 == n3:
+			if n1 == n2 and n3:
+				emb.add_field(name = f'**Вы выиграли 10000**', value = ":leaves:")
+
+				cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(10000, ctx.author.id, ctx.guild.id))
+				connection.commit()
+			else:
+				emb.add_field(name = f'**Вы выиграли 3000**', value = ":leaves:")
+
+				cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(3000, ctx.author.id, ctx.guild.id))
+				connection.commit()
+		elif n3 == n1 or n3 == n2:
+			if n1 == n2 and n3:
+				emb.add_field(name = f'**Вы выиграли 10000**', value = ":leaves:")
+
+				cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(10000, ctx.author.id, ctx.guild.id))
+				connection.commit()
+			else:
+				emb.add_field(name = f'**Вы выиграли 3000**', value = ":leaves:")
+
+				cursor.execute("UPDATE users SET cash = cash + {} WHERE id = {} AND guild_id = {}".format(3000, ctx.author.id, ctx.guild.id))
+				connection.commit()
+		else:
+			emb.add_field(name = f'**Вы проиграли**', value = "Удачи в Следующий раз!")
+
+		await ctx.send(embed = emb)
+
+
 
 def setup(bot):
 	bot.add_cog(Economy(bot))
