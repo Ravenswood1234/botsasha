@@ -254,6 +254,7 @@ class Owners(commands.Cog):
 
 
 	@commands.command()
+	@commands.has_permissions(administrator = True)
 	async def news(self, ctx, embb = None, *, arg = None):
 		if embb is None:
 			await ctx.send("Ошибка!")
@@ -271,6 +272,7 @@ class Owners(commands.Cog):
 
 
 	@commands.command()
+	@commands.has_permissions(administrator = True)
 	async def accept_moder(self, ctx, member: discord.Member = None):
 		if member is None:
 			await ctx.send("Укажите пользователя которого хотите принять в администрацию бота!")
@@ -299,6 +301,7 @@ class Owners(commands.Cog):
 
 
 	@commands.command()
+	@commands.has_permissions(administrator = True)
 	async def reject_moder(self, ctx, member: discord.Member = None):
 		if member is None:
 			await ctx.send("Укажите пользователя!")
@@ -313,6 +316,7 @@ class Owners(commands.Cog):
 
 
 	@commands.command()
+	@commands.has_permissions(administrator = True)
 	async def un_isp(self, ctx, member: discord.Member = None):
 
 
@@ -329,6 +333,46 @@ class Owners(commands.Cog):
 			await member.send("Ваш исп.срок на модерацию был окончен! Поздравляем!")
 
 			await ctx.author.send(f"У пользователя {member.mention} был снять Испытательный срок!")
+
+
+
+	@commands.command()
+	@commands.has_permissions(administrator = True)
+	async def give_moder(self, ctx, member: discord.Member = None, role: discord.Role = None):
+		if member is None:
+			await ctx.send("Укажите пользователя!")
+		elif role is None:
+			await ctx.send("Укажите роль!")
+		else:
+
+			emb = discord.Embed(title = '**Успешно**', description = f'**Администратор {ctx.author.mention} поставил на должность "`{role.name}`", пользователя {member.mention}**', colour = discord.Color.purple())
+			emb2 = discord.Embed(title = '**Поздравляем!**', description = f'**На сервере "{ctx.guild}" вы были назначины на должность "`{role.name}`"!**', colour = discord.Color.green())
+
+			await member.add_roles(role)
+
+			await ctx.send(embed = emb)
+			await member.send(embed = emb2)
+
+
+
+	@commands.command()
+	@commands.has_permissions(administrator = True)
+	async def remove_moder(self, ctx, member: discord.Member = None, role: discord.Role = None, *, reason = None):
+		if member is None:
+			await ctx.send("Укажите пользователя!")
+		elif role is None:
+			await ctx.send("Укажите роль!")
+		elif reason is None:
+			await ctx.send("Укажите причину")
+		else:
+
+			emb = discord.Embed(title = '**Удачно**', description = f'**Администратор {ctx.author.mention} снял должность "`{role.name}`", у пользователя {member.mention}\n\nПричина: `{reason}`**', colour = discord.Color.purple())
+			emb2 = discord.Embed(title = '**Сняты!**', description = f'**На сервере "{ctx.guild}" вы сняты с  должность "`{role.name}`"\n\nПричина: `{reason}`!**', colour = discord.Color.green())
+
+			await member.remove_roles(role)
+
+			await ctx.send(embed = emb)
+			await member.send(embed = emb2)
 
 
 
